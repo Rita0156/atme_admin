@@ -11,9 +11,10 @@ const UserEditToolbar = props => (
 const UserEdit = props => {
     const notify = useNotify();
     const redirect = useRedirect();
-
+     console.log(props,'props%%%%%%%%%%%%%%%%%%%%%%%%')
     const handleSave = (values) => {
         // Send edited data to your API endpoint
+        console.log(values,'values')
         fetch(`https://atme-quiz.onrender.com/api/${props.id}`, {
             method: 'PUT',
             body: JSON.stringify(values),
@@ -29,11 +30,11 @@ const UserEdit = props => {
             notify(`Error: ${error.message}`, 'error');
         });
     };
-
+   
     return (
         <Edit {...props} save={handleSave}>
             <SimpleForm toolbar={<UserEditToolbar />} redirect="list">
-                <TextInput source="id" disabled />
+               
                 <TextInput source="name" />
                 <NumberInput source="winningCoins" />
                 <ImageInput source="quizImage" label="Avatar" accept="image/*" />

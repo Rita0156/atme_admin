@@ -8,7 +8,8 @@ import {
   EditButton,
 } from "react-admin";
 
-const UserList = (props) => (
+
+const CategoryEdit = (props) => (
   <List {...props}>
     <Datagrid>
       <ImageField
@@ -23,6 +24,6 @@ const UserList = (props) => (
   </List>
 );
 
-export default UserList;
 
 //quizImage
+export default CategoryEdit
