@@ -34,34 +34,6 @@ const AddDataForm = () => {
           ),
         })}
         onSubmit={(values, { setSubmitting }) => {
-          let scrollToIndex = null;
-          const formErrors = {};
-
-          values.questions.forEach((question, questionIndex) => {
-            if (!question.question) {
-              formErrors[`questions.${questionIndex}.question`] = "Question is required";
-              if (scrollToIndex === null) scrollToIndex = questionIndex;
-            }
-            question.answers.forEach((answer, answerIndex) => {
-              if (!answer.answer) {
-                formErrors[`questions.${questionIndex}.answers.${answerIndex}.answer`] =
-                  "Answer is required";
-                if (scrollToIndex === null) scrollToIndex = questionIndex;
-              }
-            });
-          });
-
-          if (scrollToIndex !== null && scrollToRefs.current[scrollToIndex]) {
-            scrollToRefs.current[scrollToIndex].scrollIntoView({
-              behavior: "smooth",
-            });
-          }
-
-          if (Object.keys(formErrors).length !== 0) {
-            setSubmitting(false);
-            return;
-          }
-
           console.log(values);
           setSubmitting(false);
         }}
@@ -77,14 +49,11 @@ const AddDataForm = () => {
                     <Form.Control
                       type="text"
                       placeholder="Enter your question"
-                      style={{ padding: " 15px", marginBottom: "12px" }}
+                      style={{ padding: " 15px", marginBottom:"12px" }}
                       name={`questions.${questionIndex}.question`}
                       value={question.question}
                       onChange={handleChange}
-                      isInvalid={
-                        touched.questions?.[questionIndex]?.question &&
-                        errors.questions?.[questionIndex]?.question
-                      }
+                      isInvalid={touched.questions?.[questionIndex]?.question && errors.questions?.[questionIndex]?.question}
                     />
                     <Form.Control.Feedback type="invalid">
                       {errors.questions?.[questionIndex]?.question}
@@ -114,19 +83,14 @@ const AddDataForm = () => {
                           value={answer.answer}
                           onChange={handleChange}
                           style={{ width: "85%", marginRight: "10px" }}
-                          isInvalid={
-                            touched.questions?.[questionIndex]?.answers?.[answerIndex]
-                              ?.answer &&
-                            errors.questions?.[questionIndex]?.answers?.[answerIndex]
-                              ?.answer
-                          }
+                          isInvalid={touched.questions?.[questionIndex]?.answers?.[answerIndex]?.answer && errors.questions?.[questionIndex]?.answers?.[answerIndex]?.answer}
                         />
                         <Form.Check
                           type="radio"
                           name={`correctAnswer-${questionIndex}`}
                           value={answerIndex}
                           onChange={handleChange}
-                          checked={values.questions[questionIndex].answers[answerIndex].correct}
+                          // checked={values.questions[questionIndex].answers[answerIndex].correct}
                         />
                       </Form.Group>
                     ))}
