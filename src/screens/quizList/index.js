@@ -1,23 +1,20 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
 // material
 import { Box } from "@mui/material";
 import MUIDataTable from "mui-datatables";
 import { useNavigate } from "react-router-dom";
-import AddnewRowTable from "../../components/addTablerow.js";
 import DeleteEditeTableTooltip from "../../components/updateAndDelete/index.js";
 import axios from "axios";
 
-export default function QuizzesByCategory() {
-  const name = useParams();
+export default function QuizList() {
   const [page, setPage] = useState(0);
   const [quizData, setQuizdata] = useState([]);
   const navigate = useNavigate();
-
+   
   const getData = async () => {
     const { data } = await axios.get(
-      "https://atme-quiz.onrender.com/api/contests/category/" + `${name.id}`
+      "https://atme-quiz.onrender.com/api/contests"
     );
     setQuizdata(data);
   };
@@ -25,7 +22,7 @@ export default function QuizzesByCategory() {
   useEffect(() => {
     getData();
   }, []);
-
+  
   const columns = [
     {
       name: "id",
@@ -75,6 +72,7 @@ export default function QuizzesByCategory() {
       options: {
         filter: true,
         sort: true,
+        // view?.state,
         customBodyRender: (value) => "Play and Win " + value,
       },
     },
@@ -116,7 +114,6 @@ export default function QuizzesByCategory() {
     onRowClick: (rowData) => {
       navigate(`/product/${rowData[0]}`);
     },
-
     onViewColumnsChange: (changedColumn, action) => {},
     page: page,
     onTableChange: (action, tableState) => {
@@ -130,10 +127,8 @@ export default function QuizzesByCategory() {
   return (
     <Box>
       <>
-        <AddnewRowTable />
-
         <MUIDataTable
-          title={"Category Wise Contest Table"}
+          title={"Contests Table"}
           data={quizData}
           columns={columns}
           options={options}

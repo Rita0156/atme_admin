@@ -3,7 +3,8 @@ import { useState } from "react";
 import { Box, Tooltip, IconButton } from "@mui/material";
 // import {useDispatch} from 'react-redux'
 import Iconify from "../iconify";
-
+import AddEditCategoryForm from "../editAddForm";
+import axios from 'axios'
 
 export default function DeleteEditeTableTooltip({ productDetails, tableMeta, compoData }) {
 
@@ -12,15 +13,27 @@ export default function DeleteEditeTableTooltip({ productDetails, tableMeta, com
   const [productDetailsdata,setProductDetails] =useState({})
 
   const handleEditClick = (id) => {
-    
+    console.log(id,'edit id btn clicked')
+    for(let i=0; i<productDetails?.length; i++){
+      if(productDetails[i].id==id){
+        setProductDetails(productDetails[i])
+      }
+     }
+     setShowEditForm(true);
   }
  
   const handleEditClose = () => {
-              
-    setShowEditForm(false);
+    setShowEditForm(false);  
   };
+
   const handleDeleteUser = async(id) => {
-    
+      try{
+        const {data} = await axios.delete(`https://atme-quiz.onrender.com/api/contests/${id}`)
+        console.log(data,'%%%%%%%%%%%% delete data')
+      }
+      catch(err){
+        console.log(err,'%%%%%%%%%%%% delete data')
+      }
   };
   return (
     <Box
@@ -43,7 +56,7 @@ export default function DeleteEditeTableTooltip({ productDetails, tableMeta, com
 
         <div>
           
-
+         {showModalEdit && <AddEditCategoryForm show={showModalEdit} handleClose={handleEditClose} title='Edit' editData={productDetailsdata}/>}
           {/* here open model */}
         </div>
       </Tooltip>

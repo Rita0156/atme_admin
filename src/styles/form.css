@@ -1,0 +1,9 @@
+.modal-dialog{
+    max-width: var(--bs-modal-width);
+    margin-right: 0%;
+    margin-left: 0%;
+    
+}
+.modal{
+    width: 100%;
+}
