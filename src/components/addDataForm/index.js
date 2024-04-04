@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { Container, Form, Button, Card } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
@@ -8,6 +8,7 @@ const AddDataForm = () => {
   const { numQuestions } = useParams();
   const questionCount = +numQuestions + 1;
   const scrollToRefs = useRef([]);
+  const navigate = useNavigate();
 
   return (
     <Container style={{ paddingRight: "24px" }}>
@@ -102,7 +103,10 @@ const AddDataForm = () => {
               <Button variant="primary" type="submit">
                 Submit
               </Button>
-              <Button variant="danger" className="mx-2">
+              <Button variant="danger" onClick={() => {
+                
+                  navigate(-1)
+                }} className="mx-2">
                 Cancel
               </Button>
               <Button variant="info" onClick={resetForm}>
