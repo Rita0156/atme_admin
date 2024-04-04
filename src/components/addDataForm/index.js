@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { Container, Form, Button, Card } from "react-bootstrap";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import {  useNavigate, useParams } from "react-router-dom";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
@@ -9,6 +9,25 @@ const AddDataForm = () => {
   const questionCount = +numQuestions + 1;
   const scrollToRefs = useRef([]);
   const navigate = useNavigate();
+
+  const validateForm = (values) => {
+    for (let i = 0; i < questionCount; i++) {
+      const question = values.questions[i];
+
+      if (!question.question.trim()) {
+        scrollToRefs.current[i].scrollIntoView({ behavior: "smooth" });
+        return false;
+      }
+
+      for (let j = 0; j < 4; j++) {
+        if (!question.answers[j].answer.trim()) {
+          scrollToRefs.current[i].scrollIntoView({ behavior: "smooth" });
+          return false;
+        }
+      }
+    }
+    return true;
+  };
 
   return (
     <Container style={{ paddingRight: "24px" }}>
@@ -34,6 +53,11 @@ const AddDataForm = () => {
             })
           ),
         })}
+        validate={(values) => {
+          if (!validateForm(values)) {
+            return {};
+          }
+        }}
         onSubmit={(values, { setSubmitting }) => {
           console.log(values);
           setSubmitting(false);
