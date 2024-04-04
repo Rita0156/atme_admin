@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 // material
-import { Box } from "@mui/material";
+import { Box,Container } from "@mui/material";
 import MUIDataTable from "mui-datatables";
 import { useNavigate } from "react-router-dom";
 import AddnewRowTable from "../../components/addTablerow.js";
@@ -113,10 +113,7 @@ export default function QuizzesByCategory() {
     filterType: "dropdown",
     responsive: "standard",
     selectableRows: "none",
-    onRowClick: (rowData) => {
-      navigate(`/product/${rowData[0]}`);
-    },
-
+    
     onViewColumnsChange: (changedColumn, action) => {},
     page: page,
     onTableChange: (action, tableState) => {
@@ -130,14 +127,16 @@ export default function QuizzesByCategory() {
   return (
     <Box>
       <>
-        <AddnewRowTable />
+       <Container>
+       <AddnewRowTable />
 
-        <MUIDataTable
-          title={"Category Wise Contest Table"}
-          data={quizData}
-          columns={columns}
-          options={options}
-        />
+<MUIDataTable
+  title={"Category Wise Contest Table"}
+  data={quizData}
+  columns={columns}
+  options={options}
+/>
+       </Container>
       </>
     </Box>
   );

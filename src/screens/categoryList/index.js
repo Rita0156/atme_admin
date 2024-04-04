@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 // material
-import { Box } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import MUIDataTable from "mui-datatables";
 import { useNavigate } from "react-router-dom";
 import AddnewRowTable from "../../components/addTablerow.js";
 import axios from "axios";
 
-export default function CategoryList( ) {
+export default function CategoryList() {
   const [page, setPage] = useState(0);
   const [quizData, setQuizdata] = useState([]);
   const navigate = useNavigate();
@@ -89,6 +89,7 @@ export default function CategoryList( ) {
     responsive: "standard",
     selectableRows: "none",
     onRowClick: (rowData) => {
+      console.log(rowData, "rowdata");
       navigate(`/contests/${rowData[2]}`);
     },
 
@@ -104,16 +105,18 @@ export default function CategoryList( ) {
 
   return (
     <Box>
-      <>
-        <AddnewRowTable />
+      <Container>
+        <>
+          <AddnewRowTable />
 
-        <MUIDataTable
-          title={"Category Table"}
-          data={quizData}
-          columns={columns}
-          options={options}
-        />
-      </>
+          <MUIDataTable
+            title={"Category Table"}
+            data={quizData}
+            columns={columns}
+            options={options}
+          />
+        </>
+      </Container>
     </Box>
   );
 }
