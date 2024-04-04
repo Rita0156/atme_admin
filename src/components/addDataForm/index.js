@@ -1,78 +1,153 @@
-import React from "react";
-import { Container, TextField, Stack, Typography, Paper, Grid, Button, FormControlLabel, Radio, RadioGroup } from "@mui/material";
+import React, { useRef } from "react";
+import { Container, Form, Button, Card } from "react-bootstrap";
 import { useParams } from "react-router-dom";
+import { Formik } from "formik";
+import * as Yup from "yup";
 
 const AddDataForm = () => {
-  var { numQuestions } = useParams();
-
-  numQuestions = +numQuestions + 1;
-
-  console.log(numQuestions, " --=== ");
-
-  // Function to chunk the array into arrays of size 2
-  const chunkArray = (array, size) => {
-    return array.reduce((chunks, element, index) => {
-      if (index % size === 0) {
-        chunks.push([element]);
-      } else {
-        chunks[chunks.length - 1].push(element);
-      }
-      return chunks;
-    }, []);
-  };
+  const { numQuestions } = useParams();
+  const questionCount = +numQuestions + 1;
+  const scrollToRefs = useRef([]);
 
   return (
-    <Container maxWidth="md" style={{ paddingRight: "24px" }}>
-      {[...Array(parseInt(numQuestions))].map((_, index) => (
-        <Paper key={index} elevation={3} style={{ padding: "16px", marginBottom: "16px" }}>
-          <Typography variant="h6" gutterBottom>
-            Question {index + 1}
-          </Typography>
-          <Stack spacing={2}>
-            <TextField
-              label="Enter your question"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-            />
-            {chunkArray([...Array(4)], 2).map((chunk, chunkIndex) => (
-              <Grid container spacing={2} key={chunkIndex} style={{ paddingRight: "24px" }}>
-                {chunk.map((_, ansIndex) => (
-                  <Grid item xs={6} key={ansIndex}>
-                    <TextField
-                      label={`Answer ${chunkIndex * 2 + ansIndex + 1}`}
-                      variant="outlined"
-                      fullWidth
-                      margin="normal"
-                      InputProps={{
-                        endAdornment: (
-                          <RadioGroup aria-label={`Correct Answer ${chunkIndex * 2 + ansIndex + 1}`} name={`correctAnswer${index}`}>
-                            <FormControlLabel value="option1" control={<Radio />} label="Correct" />
-                          </RadioGroup>
-                        ),
-                      }}
+    <Container style={{ paddingRight: "24px" }}>
+      <Formik
+        initialValues={{
+          questions: Array.from({ length: questionCount }, () => ({
+            question: "",
+            answers: Array.from({ length: 4 }, () => ({
+              answer: "",
+              correct: false,
+            })),
+          })),
+        }}
+        validationSchema={Yup.object().shape({
+          questions: Yup.array().of(
+            Yup.object().shape({
+              question: Yup.string().required("Question is required"),
+              answers: Yup.array().of(
+                Yup.object().shape({
+                  answer: Yup.string().required("Answer is required"),
+                })
+              ),
+            })
+          ),
+        })}
+        onSubmit={(values, { setSubmitting }) => {
+          let scrollToIndex = null;
+          const formErrors = {};
+
+          values.questions.forEach((question, questionIndex) => {
+            if (!question.question) {
+              formErrors[`questions.${questionIndex}.question`] = "Question is required";
+              if (scrollToIndex === null) scrollToIndex = questionIndex;
+            }
+            question.answers.forEach((answer, answerIndex) => {
+              if (!answer.answer) {
+                formErrors[`questions.${questionIndex}.answers.${answerIndex}.answer`] =
+                  "Answer is required";
+                if (scrollToIndex === null) scrollToIndex = questionIndex;
+              }
+            });
+          });
+
+          if (scrollToIndex !== null && scrollToRefs.current[scrollToIndex]) {
+            scrollToRefs.current[scrollToIndex].scrollIntoView({
+              behavior: "smooth",
+            });
+          }
+
+          if (Object.keys(formErrors).length !== 0) {
+            setSubmitting(false);
+            return;
+          }
+
+          console.log(values);
+          setSubmitting(false);
+        }}
+      >
+        {({ values, handleChange, handleSubmit, errors, touched }) => (
+          <Form onSubmit={handleSubmit}>
+            {values.questions.map((question, questionIndex) => (
+              <Card key={questionIndex} className="mb-3">
+                <Card.Body ref={(el) => (scrollToRefs.current[questionIndex] = el)}>
+                  <Card.Title>Question {questionIndex + 1}</Card.Title>
+                  <Form.Group controlId={`questions.${questionIndex}.question`}>
+                    <Form.Label>Enter your question</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter your question"
+                      style={{ padding: " 15px", marginBottom: "12px" }}
+                      name={`questions.${questionIndex}.question`}
+                      value={question.question}
+                      onChange={handleChange}
+                      isInvalid={
+                        touched.questions?.[questionIndex]?.question &&
+                        errors.questions?.[questionIndex]?.question
+                      }
                     />
-                  </Grid>
-                ))}
-              </Grid>
+                    <Form.Control.Feedback type="invalid">
+                      {errors.questions?.[questionIndex]?.question}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                  <div
+                    style={{
+                      display: "grid",
+                      paddingLeft: "15px",
+                      gridTemplateColumns: "repeat(2,1fr)",
+                    }}
+                  >
+                    {question.answers.map((answer, answerIndex) => (
+                      <Form.Group
+                        controlId={`questions.${questionIndex}.answers.${answerIndex}.answer`}
+                        key={answerIndex}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          marginBottom: "7px",
+                        }}
+                      >
+                        <Form.Control
+                          type="text"
+                          placeholder={`Answer ${answerIndex + 1}`}
+                          name={`questions.${questionIndex}.answers.${answerIndex}.answer`}
+                          value={answer.answer}
+                          onChange={handleChange}
+                          style={{ width: "85%", marginRight: "10px" }}
+                          isInvalid={
+                            touched.questions?.[questionIndex]?.answers?.[answerIndex]
+                              ?.answer &&
+                            errors.questions?.[questionIndex]?.answers?.[answerIndex]
+                              ?.answer
+                          }
+                        />
+                        <Form.Check
+                          type="radio"
+                          name={`correctAnswer-${questionIndex}`}
+                          value={answerIndex}
+                          onChange={handleChange}
+                          checked={values.questions[questionIndex].answers[answerIndex].correct}
+                        />
+                      </Form.Group>
+                    ))}
+                  </div>
+                </Card.Body>
+              </Card>
             ))}
-          </Stack>
-        </Paper>
-      ))}
-      <Stack direction="row" spacing={2} justifyContent="flex-end" style={{ marginBottom: "26px" }}>
-        <Button variant="contained" color="primary">
-          Submit
-        </Button>
-        <Button variant="contained" color="error">
-          Cancel
-        </Button>
-        <Button variant="contained" color="info">
-          Clear
-        </Button>
-      </Stack>
+            <div className="d-flex justify-content-end mb-4">
+              <Button variant="primary" type="submit">
+                Submit
+              </Button>
+              <Button variant="danger" className="mx-2">
+                Cancel
+              </Button>
+              <Button variant="info">Clear</Button>
+            </div>
+          </Form>
+        )}
+      </Formik>
     </Container>
   );
 };
 
 export default AddDataForm;
-
