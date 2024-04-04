@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 // material
-import { Box } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import MUIDataTable from "mui-datatables";
 import { useNavigate } from "react-router-dom";
 import DeleteEditeTableTooltip from "../../components/updateAndDelete/index.js";
@@ -47,7 +47,7 @@ export default function QuizList() {
         customBodyRender: (value) => {
           return (
             <Box>
-              <img src={value} />
+              <img alt="" src={value} />
             </Box>
           );
         },
@@ -126,6 +126,8 @@ export default function QuizList() {
 
   return (
     <Box>
+      <Container>
+
       <>
         <MUIDataTable
           title={"Contests Table"}
@@ -134,6 +136,7 @@ export default function QuizList() {
           options={options}
         />
       </>
+      </Container>
     </Box>
   );
 }

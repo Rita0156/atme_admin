@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 // material
-import { Box } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import MUIDataTable from "mui-datatables";
 import { useNavigate } from "react-router-dom";
 import AddnewRowTable from "../../components/addTablerow.js";
@@ -49,9 +49,9 @@ export default function QuizzesByCategory() {
 
         customBodyRender: (value) => {
           return (
-            <Box>
-              <img src={value} />
-            </Box>
+            <Box style={{marginRight:"180px", marginLeft:"40px"}}>
+            <img alt="" src={value} />
+          </Box>
           );
         },
       },
@@ -64,7 +64,13 @@ export default function QuizzesByCategory() {
         filter: false,
         sort: true,
 
-        customBodyRender: (value) => (value ? value : "-"),
+        customBodyRender: (value) => {
+          return (
+            <Box style={{marginRight:"80px", marginLeft:"40px"}}>
+              <span>{value? value : ""}</span>
+            </Box>
+          );
+        },
       },
     },
 
@@ -129,16 +135,18 @@ export default function QuizzesByCategory() {
 
   return (
     <Box>
-      <>
-        <AddnewRowTable />
+      <Container>
+        <>
+          <AddnewRowTable />
 
-        <MUIDataTable
-          title={"Category Wise Contest Table"}
-          data={quizData}
-          columns={columns}
-          options={options}
-        />
-      </>
+          <MUIDataTable
+            title={"Category Wise Contest Table"}
+            data={quizData}
+            columns={columns}
+            options={options}
+          />
+        </>
+      </Container>
     </Box>
   );
 }

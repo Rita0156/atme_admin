@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 // material
-import { Box } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import MUIDataTable from "mui-datatables";
 import { useNavigate } from "react-router-dom";
 import AddnewRowTable from "../../components/addTablerow.js";
@@ -46,8 +46,8 @@ export default function CategoryList( ) {
 
         customBodyRender: (value) => {
           return (
-            <Box>
-              <img src={value} />
+            <Box style={{marginRight:"270px", marginLeft:"40px"}}>
+              <img alt="" src={value} />
             </Box>
           );
         },
@@ -57,11 +57,19 @@ export default function CategoryList( ) {
       name: "name",
       label: "Category Name",
       display: true,
+      
       options: {
         filter: false,
         sort: true,
-
-        customBodyRender: (value) => (value ? value : "-"),
+       
+        customBodyRender: (value) => {
+          return (
+            <Box style={{marginRight:"130px", marginLeft:"40px"}}>
+              <span>{value? value : ""}</span>
+            </Box>
+          );
+        },
+        // customBodyRender: (value) => (value ? value : "-"),
       },
     },
 
@@ -104,6 +112,8 @@ export default function CategoryList( ) {
 
   return (
     <Box>
+      <Container>
+
       <>
         <AddnewRowTable />
 
@@ -114,6 +124,7 @@ export default function CategoryList( ) {
           options={options}
         />
       </>
+      </Container>
     </Box>
   );
 }
