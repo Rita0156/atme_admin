@@ -10,10 +10,22 @@ import {
 } from "@mui/material";
 import Iconify from "../iconify";
 import { useNavigate } from "react-router-dom";
+import { DatePicker, TimePicker } from "@mui/lab";
+
 export default function AddnewRowTable() {
   const [showModal, setShowModal] = useState(false);
   const [numQuestions, setNumQuestions] = useState(0);
-  const [getQuestion, setGetQuestion] =  useState(false);
+  const [getQuestion, setGetQuestion] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    quizImage: "",
+    prizeId: "",
+    slug: "",
+    entryCoins: "",
+    winningCoins: "",
+    startTime: "",
+    endTime: "",
+  });
   const navigate = useNavigate();
 
   const handleOpenModal = () => {
@@ -28,6 +40,14 @@ export default function AddnewRowTable() {
     setGetQuestion(true);
     navigate(`/question/${numQuestions}`);
     setShowModal(false);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
   };
 
   console.log(numQuestions, " -- from the ");
@@ -76,6 +96,60 @@ export default function AddnewRowTable() {
           </Typography>
           <Stack spacing={2}>
             <TextField
+              label="Name"
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              fullWidth
+            />
+
+            <TextField
+              label="Quiz Image URL"
+              type="text"
+              name="quizImage"
+              value={formData.quizImage}
+              onChange={handleChange}
+              fullWidth
+            />
+
+            <TextField
+              label="Prize ID"
+              type="text"
+              name="prizeId"
+              value={formData.prizeId}
+              onChange={handleChange}
+              fullWidth
+            />
+
+            <TextField
+              label="Slug"
+              type="text"
+              name="slug"
+              value={formData.slug}
+              onChange={handleChange}
+              fullWidth
+            />
+
+            <TextField
+              label="Entry Coins"
+              type="number"
+              name="entryCoins"
+              value={formData.entryCoins}
+              onChange={handleChange}
+              fullWidth
+            />
+
+            <TextField
+              label="Winning Coins"
+              type="number"
+              name="winningCoins"
+              value={formData.winningCoins}
+              onChange={handleChange}
+              fullWidth
+            />
+
+            <TextField
               label="Number of Questions"
               type="number"
               value={numQuestions}
@@ -83,6 +157,28 @@ export default function AddnewRowTable() {
               fullWidth
               InputProps={{ inputProps: { min: 1 } }}
             />
+
+            {/* <DatePicker
+              label="Start Date"
+              value={formData.startDate}
+              onChange={(newValue) =>
+                setFormData({ ...formData, startDate: newValue })
+              }
+              renderInput={(params) => <TextField {...params} />}
+              fullWidth
+            />
+
+            <DatePicker
+              label="End Date"
+              value={formData.endDate}
+              onChange={(newValue) =>
+                setFormData({ ...formData, endDate: newValue })
+              }
+              renderInput={(params) => <TextField {...params} />}
+              fullWidth
+            /> */}
+
+
             <Button
               onClick={handleAddQuestions}
               variant="contained"
@@ -93,7 +189,6 @@ export default function AddnewRowTable() {
           </Stack>
         </Box>
       </Modal>
-     
     </Box>
   );
 }
