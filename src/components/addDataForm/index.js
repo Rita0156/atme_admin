@@ -38,7 +38,7 @@ const AddDataForm = () => {
           setSubmitting(false);
         }}
       >
-        {({ values, handleChange, handleSubmit, errors, touched }) => (
+        {({ values, handleChange, handleSubmit, errors, touched, resetForm }) => (
           <Form onSubmit={handleSubmit}>
             {values.questions.map((question, questionIndex) => (
               <Card key={questionIndex} className="mb-3">
@@ -105,7 +105,9 @@ const AddDataForm = () => {
               <Button variant="danger" className="mx-2">
                 Cancel
               </Button>
-              <Button variant="info">Clear</Button>
+              <Button variant="info" onClick={resetForm}>
+                Clear
+              </Button>
             </div>
           </Form>
         )}
