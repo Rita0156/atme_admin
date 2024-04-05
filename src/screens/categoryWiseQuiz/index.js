@@ -119,10 +119,7 @@ export default function QuizzesByCategory() {
     filterType: "dropdown",
     responsive: "standard",
     selectableRows: "none",
-    onRowClick: (rowData) => {
-      navigate(`/product/${rowData[0]}`);
-    },
-
+    
     onViewColumnsChange: (changedColumn, action) => {},
     page: page,
     onTableChange: (action, tableState) => {
@@ -139,14 +136,13 @@ export default function QuizzesByCategory() {
         <>
           <AddnewRowTable />
 
-          <MUIDataTable
-            title={"Category Wise Contest Table"}
-            data={quizData}
-            columns={columns}
-            options={options}
-          />
-        </>
-      </Container>
+        <MUIDataTable
+          title={"Category Wise Contest Table"}
+          data={quizData}
+          columns={columns}
+          options={options}
+        />
+      </>
     </Box>
   );
 }

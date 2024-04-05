@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Form, Button, Modal } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../styles/form.css";
 const AddEditCategoryForm = ({ show, handleClose, title, editData }) => {
+  const [noOfQuestion, setNumOfQuestion] = useState(0);
+  const navigate = useNavigate();
   const name = useParams();
   console.log(name, "params data");
   const [formData, setFormData] = useState({
@@ -66,28 +68,20 @@ const AddEditCategoryForm = ({ show, handleClose, title, editData }) => {
     handleClose();
   };
 
+  
+
   return (
     <Modal show={show} onHide={handleClose} centered>
       <Modal.Header closeButton>
         <Modal.Title>{title ? title + " Form" : "Edit Form"}</Modal.Title>
       </Modal.Header>
 
-      <Form
-        style={{
-          paddingLeft: "20px",
-          paddingRight: "20px",
-          marginBottom: "40px",
-        }}
-      >
-        <Form.Group controlId="name">
-          <Form.Label>Name</Form.Label>
-          <Form.Control
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-          />
-        </Form.Group>
+        <Modal.Body>
+        <Form >
+          <Form.Group controlId="name">
+            <Form.Label>Name</Form.Label>
+            <Form.Control type="text" name="name" value={formData.name} onChange={handleChange} />
+          </Form.Group>
 
         <Form.Group controlId="quizImage">
           <Form.Label>Quiz Image URL</Form.Label>
@@ -175,3 +169,4 @@ const AddEditCategoryForm = ({ show, handleClose, title, editData }) => {
 };
 
 export default AddEditCategoryForm;
+

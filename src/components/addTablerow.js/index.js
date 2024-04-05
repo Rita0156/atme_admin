@@ -3,13 +3,9 @@ import { useState } from "react";
 import {
   Box,
   Button,
-  Modal,
-  Typography,
-  TextField,
-  Stack,
 } from "@mui/material";
 import Iconify from "../iconify";
-import { useNavigate } from "react-router-dom";
+import AddEditCategoryForm from "../editAddForm";
 import { DatePicker, TimePicker } from "@mui/lab";
 
 export default function AddnewRowTable() {
@@ -73,7 +69,7 @@ export default function AddnewRowTable() {
       >
         Add Quiz
       </Button>
-      <Modal
+      {/* <Modal
         open={showModal}
         onClose={handleCloseModal}
         aria-labelledby="modal-title"
@@ -168,6 +164,8 @@ export default function AddnewRowTable() {
           </Stack>
         </Box>
       </Modal>
+      </Modal> */}
+     {showModal && <AddEditCategoryForm show={showModal} handleClose={handleCloseModal} title={"Add"} editData={null}/>}
     </Box>
   );
 }

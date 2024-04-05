@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import AddnewRowTable from "../../components/addTablerow.js";
 import axios from "axios";
 
-export default function CategoryList( ) {
+export default function CategoryList() {
   const [page, setPage] = useState(0);
   const [quizData, setQuizdata] = useState([]);
   const navigate = useNavigate();
@@ -97,6 +97,7 @@ export default function CategoryList( ) {
     responsive: "standard",
     selectableRows: "none",
     onRowClick: (rowData) => {
+      console.log(rowData, "rowdata");
       navigate(`/contests/${rowData[2]}`);
     },
 
