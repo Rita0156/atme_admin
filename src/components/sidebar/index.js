@@ -28,6 +28,12 @@ function ResponsiveDrawer(props) {
   const handleOpenModal = (item) => {
     setModalOpen(true);
     setSelectedItem(item);
+  const { window,onItemClick} = props;
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [isClosing, setIsClosing] = React.useState(false);
+  const handleDrawerClose = () => {
+    setIsClosing(true);
+    setMobileOpen(false);
   };
 
   const handleCloseModal = () => {
@@ -46,22 +52,34 @@ function ResponsiveDrawer(props) {
       default:
         return '/';
     }
-  }; 
-
-
+  };
+  
+  const getDestinationUrl = (text) => {
+    switch (text) {
+      case 'Category':
+        return '/'; 
+      case 'Quiz':
+        return '/quizlist'; 
+      case 'Dashboard':
+        return '/dashboard'; 
+      default:
+        return '/'; 
+    }
+  };
+  
   const drawer = (
     <div>
       <Toolbar />
       <Divider />
-      <List style={{ marginTop: "-50px" }}>
-        {["Category ", "Quiz", "Dashboard"].map((text, index) => (
-          <ListItem key={text} disablePadding >
-            <ListItemButton component={Link} to={getDestinationUrl(text)}> 
-              <ListItemIcon>
+      <List style={{marginTop:"-60px"}}>
+        {['Category', 'Quiz', 'Dashboard'].map((text, index) => (
+          <ListItem key={text} disablePadding onClick={() => onItemClick(text)}>
+            <ListItemButton component={Link} to={getDestinationUrl(text)} >
+            <ListItemIcon>
                 {index === 0 && <CategoryIcon />}
                 {index === 1 && <QuizIcon />}
                 {index === 2 && <DashboardIcon />}
-              </ListItemIcon>
+              </ListItemIcon> 
               <ListItemText primary={text} />
               {index === 1 && <Iconify icon="eva:plus-fill"  onClick={() => handleOpenModal(text)} />}
             </ListItemButton>
@@ -71,6 +89,9 @@ function ResponsiveDrawer(props) {
       <Divider />
     </div>
   );
+  // Remove this const when copying and pasting into your project.
+  
+  const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -83,13 +104,12 @@ function ResponsiveDrawer(props) {
         <Drawer
           variant="permanent"
           sx={{
-            display: { xs: "none", sm: "block" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
+            display: { xs: 'none', sm: 'block' },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth,marginTop: '55px',borderRight: '0', },
+        
           }}
-          open
+          
+        
         >
           {drawer}
         </Drawer>
@@ -101,6 +121,7 @@ function ResponsiveDrawer(props) {
 
 ResponsiveDrawer.propTypes = {
   window: PropTypes.func,
+  onItemClick: PropTypes.func.isRequired,
 };
 
 export default ResponsiveDrawer;

@@ -9,6 +9,7 @@ import axios from "axios";
 import DeleteEditeTableTooltip from "../../components/updateAndDelete/index.js";
 // import AddEditCategoryForm from "../../components/editAddForm/index.js";
 import AddCategoryRow from "../../components/addCategoryRow/index.js";
+import Layout1 from "../../components/layout/Layout.js";
 
 export default function CategoryList() {
   const [page, setPage] = useState(0);
@@ -122,6 +123,7 @@ export default function CategoryList() {
   return (
     <Box>
       <>
+   <Layout1 headerTitle={'Category'}/>
         <Container>
           <AddCategoryRow />
 
@@ -132,6 +134,7 @@ export default function CategoryList() {
             options={options}
             
           />
+          
         </Container>
       </>
     </Box>

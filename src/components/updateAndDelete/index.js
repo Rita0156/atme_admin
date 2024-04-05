@@ -26,16 +26,25 @@ export default function DeleteEditeTableTooltip({ productDetails, tableMeta, com
     setShowEditForm(false);  
   };
 
-  const handleDeleteUser = async(id) => {
-    
-      try{
-        const {data} = await axios.delete(`https://atme-quiz.onrender.com/api/contests/${id}`)
-        console.log(data,'%%%%%%%%%%%% delete data')
-      }
-      catch(err){
-        console.log(err,'%%%%%%%%%%%% delete data')
-      }
-  };
+  // const handleDeleteUser = async(id) => {
+  //     try{
+  //       const {data} = await axios.delete(`https://atme-quiz.onrender.com/api/contests/${id}`)
+  //       console.log(data,'%%%%%%%%%%%% delete data')
+  //     }
+  //     catch(err){
+  //       console.log(err,'%%%%%%%%%%%% delete data')
+  //     }
+  // };
+  const handleDeleteUser = async (id) => {
+    try {
+        console.log("Deleting resource with ID:", id);
+        const response = await axios.get(`https://atme-quiz.onrender.com/api/contests/${id}`);
+        console.log("Delete request response:", response.data);
+    } catch (error) {
+        console.error("Error deleting resource:", error);
+    }
+};
+
   return (
     <Box
       sx={{
