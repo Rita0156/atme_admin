@@ -13,6 +13,7 @@ import Toolbar from '@mui/material/Toolbar';
 import CategoryIcon from '@mui/icons-material/Category';
 import QuizIcon from '@mui/icons-material/Quiz';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import { Link } from 'react-router-dom';
 const drawerWidth = 240;
 function ResponsiveDrawer(props) {
   const { window } = props;
@@ -31,7 +32,20 @@ function ResponsiveDrawer(props) {
       setMobileOpen(!mobileOpen);
     }
   };
-
+  
+  const getDestinationUrl = (text) => {
+    switch (text) {
+      case 'Category':
+        return '/'; 
+      case 'Quiz':
+        return '/contests/:id'; 
+      case 'Dashboard':
+        return '/dashboard'; 
+      default:
+        return '/'; 
+    }
+  };
+  
   const drawer = (
     <div>
       <Toolbar />
@@ -39,12 +53,12 @@ function ResponsiveDrawer(props) {
       <List style={{marginTop:"-50px"}}>
         {['Category', 'Quiz', 'Dashboard'].map((text, index) => (
           <ListItem key={text} disablePadding >
-            <ListItemButton >
+            <ListItemButton component={Link} to={getDestinationUrl(text)} >
             <ListItemIcon>
                 {index === 0 && <CategoryIcon />}
                 {index === 1 && <QuizIcon />}
                 {index === 2 && <DashboardIcon />}
-              </ListItemIcon>
+              </ListItemIcon> 
               <ListItemText primary={text} />
             </ListItemButton>
           </ListItem>
@@ -54,7 +68,9 @@ function ResponsiveDrawer(props) {
     </div>
   );
   // Remove this const when copying and pasting into your project.
+  
   const container = window !== undefined ? () => window().document.body : undefined;
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />

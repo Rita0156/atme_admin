@@ -19,7 +19,8 @@ const AddEditCategoryForm = ({ show, handleClose, title, editData }) => {
     startTime: editData?.startTime || "",
     endTime: editData?.endTime || "",
     questionSet: editData?.questionSet || { questionSet: [] },
-    quizId: editData?.quizId || [],
+    quizId: editData?.quizId || "",
+    id:editData?.id||""
   });
 
   const handleChange = (e) => {
