@@ -5,7 +5,6 @@ import QuizzesByCategory from "./screens/categoryWiseQuiz";
 import SidePanel from "./components/sidebar";
 import QuizList from "./screens/quizList";
 import AddDataForm from "./components/addQuestionForm";
-import Header from "./components/header";
 
 function App() {
   return (
@@ -13,7 +12,7 @@ function App() {
       <BrowserRouter>
         <SidePanel />
         <div>
-          <Header/>
+          
           <main className="py-3">
             <Routes>
               <Route path="/" element={<CategoryList />} />

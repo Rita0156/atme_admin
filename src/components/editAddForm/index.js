@@ -3,7 +3,11 @@ import { Form, Button, Modal } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../styles/form.css";
+import { updateContest } from "../../reducer/ContestSlice";
+import { useDispatch } from "react-redux";
 const AddEditCategoryForm = ({ show, handleClose, title, editData }) => {
+  
+  const dispatch = useDispatch();
   const [noOfQuestion, setNumOfQuestion] = useState(0);
   const navigate = useNavigate();
   const name = useParams();
@@ -58,6 +62,7 @@ const AddEditCategoryForm = ({ show, handleClose, title, editData }) => {
             },
           }
         );
+        dispatch(updateContest({ id: editData.id, formData }));
         console.log(data, "update data");
       } catch (err) {
         console.log("error", title, err);
