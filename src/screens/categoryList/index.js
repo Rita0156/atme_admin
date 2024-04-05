@@ -4,8 +4,11 @@ import { useState } from "react";
 import { Box, Container } from "@mui/material";
 import MUIDataTable from "mui-datatables";
 import { useNavigate } from "react-router-dom";
-import AddnewRowTable from "../../components/addTablerow.js";
+// import AddnewRowTable from "../../components/addTablerow.js";
 import axios from "axios";
+import DeleteEditeTableTooltip from "../../components/updateAndDelete/index.js";
+// import AddEditCategoryForm from "../../components/editAddForm/index.js";
+import AddCategoryRow from "../../components/addCategoryRow/index.js";
 
 export default function CategoryList() {
   const [page, setPage] = useState(0);
@@ -38,16 +41,16 @@ export default function CategoryList() {
     },
     {
       name: "quizImage",
-      label: "Contests",
+      label: "Quizes",
       options: {
         filter: true,
         sort: true,
-        setCellProps: () => ({ style: { width: "150px" } }),
+        setCellProps: () => ({ style: { width: "150px", paddingLeft:"40px" , paddingRight:"200px" } }),
 
         customBodyRender: (value) => {
           return (
             <Box>
-              <img src={value} />
+              <img alt="" src={value} />
             </Box>
           );
         },
@@ -66,16 +69,29 @@ export default function CategoryList() {
     },
 
     {
-      name: "winningCoins",
-      label: "Contest Name",
-      display: true,
+      name: "Actions",
+      label: "Actions",
       options: {
-        filter: true,
-        sort: true,
-        // view?.state,
-        customBodyRender: (value) => "Play and Win " + value,
+        onRowClick: false,
+        setCellHeaderProps: (value) => ({
+          className: "centeredHeaderCell",
+        }),
+        filter: false,
+        empty: true,
+        display: true,
+        viewColumns: false,
+        customBodyRender: (value, tableMeta, updateValue) => {
+          return (
+            <DeleteEditeTableTooltip
+              productDetails={quizData}
+              tableMeta={tableMeta}
+            />
+          );
+        },
       },
     },
+
+
   ];
 
   const handlePageChange = (action, page) => {
@@ -105,18 +121,19 @@ export default function CategoryList() {
 
   return (
     <Box>
-      <Container>
-        <>
-          <AddnewRowTable />
+      <>
+        <Container>
+          <AddCategoryRow />
 
           <MUIDataTable
             title={"Category Table"}
             data={quizData}
             columns={columns}
             options={options}
+            
           />
-        </>
-      </Container>
+        </Container>
+      </>
     </Box>
   );
 }

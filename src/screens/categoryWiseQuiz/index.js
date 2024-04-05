@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 // material
-import { Box,Container } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import MUIDataTable from "mui-datatables";
 import { useNavigate } from "react-router-dom";
 import AddnewRowTable from "../../components/addTablerow.js";
@@ -41,16 +41,16 @@ export default function QuizzesByCategory() {
     },
     {
       name: "quizImage",
-      label: "Contests",
+      label: "Quizes",
       options: {
         filter: true,
         sort: true,
-        setCellProps: () => ({ style: { width: "150px" } }),
+        setCellProps: () => ({ style: { width: "150px" , paddingLeft:"40px", paddingRight:"160px" } }),
 
         customBodyRender: (value) => {
           return (
             <Box>
-              <img src={value} />
+              <img  alt="" src={value} />
             </Box>
           );
         },
@@ -70,7 +70,7 @@ export default function QuizzesByCategory() {
 
     {
       name: "winningCoins",
-      label: "Contest Name",
+      label: "Quiz Name",
       display: true,
       options: {
         filter: true,
@@ -113,7 +113,7 @@ export default function QuizzesByCategory() {
     filterType: "dropdown",
     responsive: "standard",
     selectableRows: "none",
-    
+
     onViewColumnsChange: (changedColumn, action) => {},
     page: page,
     onTableChange: (action, tableState) => {
@@ -127,16 +127,16 @@ export default function QuizzesByCategory() {
   return (
     <Box>
       <>
-       <Container>
-       <AddnewRowTable />
+        <Container>
+          <AddnewRowTable />
 
-<MUIDataTable
-  title={"Category Wise Contest Table"}
-  data={quizData}
-  columns={columns}
-  options={options}
-/>
-       </Container>
+          <MUIDataTable
+            title={"Category Wise Quiz Table"}
+            data={quizData}
+            columns={columns}
+            options={options}
+          />
+        </Container>
       </>
     </Box>
   );

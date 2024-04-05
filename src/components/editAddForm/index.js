@@ -3,6 +3,7 @@ import { Form, Button, Modal } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../styles/form.css";
+
 const AddEditCategoryForm = ({ show, handleClose, title, editData }) => {
   const [noOfQuestion, setNumOfQuestion] = useState(0);
   const navigate = useNavigate();
@@ -32,7 +33,7 @@ const AddEditCategoryForm = ({ show, handleClose, title, editData }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("inside submit button");
-    if (title == "Add" && editData == null) {
+    if (title === "Add" && editData == null) {
       //  try{
       //    const {data} = await axios.post(`https://atme-quiz.onrender.com/api/contests`,formData,{
       //       headers : {
@@ -64,38 +65,27 @@ const AddEditCategoryForm = ({ show, handleClose, title, editData }) => {
       }
     }
 
-    console.log(formData, "form data^^^^^^^^^^^^^^^^^^");
+   
     handleClose();
   };
 
   
 
   return (
-    <Modal show={show} onHide={handleClose}>
-      <Modal.Dialog>
+    <Modal show={show} onHide={handleClose} centered>
+    
         <Modal.Header closeButton>
           <Modal.Title>{title ? title + " Form" : "Edit Form"}</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
           <Form>
-            <Form.Group controlId="name">
+            <Form.Group controlId="name" style={{paddingBottom:"10px"}}>
               <Form.Label>Name</Form.Label>
-              <Form.Select>
-                <option value="">Choose...</option>
-                <option value="option1">Option 1</option>
-                <option value="option2">Option 2</option>
-                <option value="option3">Option 3</option>
-                {/* Add more options as needed */}
-              </Form.Select>
-            </Form.Group>
-
-            <Form.Group controlId="quizImage">
-              <Form.Label>Quiz Image URL</Form.Label>
               <Form.Control
                 type="text"
-                name="quizImage"
-                value={formData.quizImage}
+                name="name"
+                value={formData.name}
                 onChange={handleChange}
               />
             </Form.Group>
@@ -110,7 +100,7 @@ const AddEditCategoryForm = ({ show, handleClose, title, editData }) => {
               />
             </Form.Group>
 
-            <Form.Group controlId="entryCoins">
+            <Form.Group controlId="entryCoins" style={{paddingBottom:"10px"}}>
               <Form.Label>Entry Coins</Form.Label>
               <Form.Control
                 type="number"
@@ -120,7 +110,7 @@ const AddEditCategoryForm = ({ show, handleClose, title, editData }) => {
               />
             </Form.Group>
 
-            <Form.Group controlId="winningCoins">
+            <Form.Group controlId="winningCoins" style={{paddingBottom:"10px"}}>
               <Form.Label>Winning Coins</Form.Label>
               <Form.Control
                 type="number"
@@ -130,8 +120,8 @@ const AddEditCategoryForm = ({ show, handleClose, title, editData }) => {
               />
             </Form.Group>
 
-            {title == "Add" && (
-              <Form.Group>
+            {title === "Add" && (
+              <Form.Group  style={{paddingBottom:"10px"}}>
                 <Form.Label>How many questions do you want to add?</Form.Label>
                 <Form.Control
                   type="number"
@@ -141,17 +131,18 @@ const AddEditCategoryForm = ({ show, handleClose, title, editData }) => {
               </Form.Group>
             )}
           </Form>
-        </Modal.Body>
-
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          
+          <Button variant="secondary" onClick={handleClose} style={{marginRight:"18px" }}>
             Close
           </Button>
-          <Button variant="primary" type="submit" onClick={handleSubmit}>
-            {title == "Add" ? title : "Submit"}
+          <Button variant="primary"   type="submit" onClick={handleSubmit} >
+            {title === "Add" ? title : "Submit"}
           </Button>
-        </Modal.Footer>
-      </Modal.Dialog>
+        </Modal.Body>
+
+    
+     
+ 
     </Modal>
   );
 };

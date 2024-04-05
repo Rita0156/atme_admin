@@ -11,9 +11,9 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <SidePanel />
         <div>
-          <Header/>
+          {/* <Header/> */}
+        <SidePanel />
           <main className="py-3">
             <Routes>
               <Route path="/" element={<CategoryList />} />
