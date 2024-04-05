@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Container, Form, Button, Card, Alert } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { Formik } from "formik";
@@ -13,9 +13,13 @@ const AddDataForm = () => {
   const scrollToRefs = useRef([]);
   const navigate = useNavigate();
   const { state } = useLocation();
+  const [onAlert, setOnAlert] = useState(false);
   
 
+  // console.log(onAlert, "--------------------------------")
+ 
   const validateForm = (values) => {
+    setOnAlert(true);
     for (let i = 0; i < questionCount; i++) {
       const question = values.questions[i];
 
@@ -57,7 +61,7 @@ const AddDataForm = () => {
             answers: Array.from({ length: 4 }, () => ({
               answer: "",
               correct: false,
-              selected: true, // Track if the answer is selected
+              selected: false, // Track if the answer is selected
             })),
           })),
         }}
@@ -78,7 +82,11 @@ const AddDataForm = () => {
             return {};
           }
         }}
+        
+
         onSubmit={async (values, { setSubmitting }) => {
+          
+          console.log(onAlert, "--------------------------------")
           toast.success('Quiz Added ')
           state.questionSet.questionSet = values;
           try {
@@ -91,7 +99,7 @@ const AddDataForm = () => {
                 },
               }
             );
-            console.log(data, "%%%%%%%%%%%% add data");
+            // console.log(data, "%%%%%%%%%%%% add data");
           } catch (err) {
             console.log("error", err);
           }
@@ -190,11 +198,11 @@ const AddDataForm = () => {
                       </Form.Group>
                     ))}
                   </div>
-                  {!question.answers.some((answer) =>  answer.selected) && (
+                {!question.answers.some((answer) => answer.selected) && onAlert && (
                     <Alert variant="danger">
                       Please select the correct answer for Question {questionIndex + 1}.
                     </Alert>
-                  )}
+                  ) }
                 </Card.Body>
               </Card>
             ))}

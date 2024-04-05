@@ -50,8 +50,8 @@ const AddQuiz = ({ show, handleClose, title, editData }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    navigate(`/question/${noOfQuestion}`, { state: formData });
     if (title === "Add" && editData == null) {
-      navigate(`/question/${noOfQuestion}`, { state: formData });
       handleClose();
     } else {
       try {

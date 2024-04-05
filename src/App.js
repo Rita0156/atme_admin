@@ -6,17 +6,16 @@ import SidePanel from "./components/sidebar";
 import QuizList from "./screens/quizList";
 import AddDataForm from "./components/addQuestionForm";
 import  { Toaster } from 'react-hot-toast';
-import Header from "./components/header";
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
         <div>
-          {/* <Header/> */}
+       
           <main className="py-3">
             <SidePanel />
-              <Toaster position="top-right" />
+            <Toaster position="top-right" />
             <Routes>
               <Route path="/" element={<CategoryList />} />
               <Route path="/contests/:id" element={<QuizzesByCategory />} />
