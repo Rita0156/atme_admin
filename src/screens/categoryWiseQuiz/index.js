@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import AddnewRowTable from "../../components/addTablerow.js";
 import DeleteEditeTableTooltip from "../../components/updateAndDelete/index.js";
 import axios from "axios";
+import Layout1 from "../../components/layout/Layout.js";
 
 export default function QuizzesByCategory() {
   const name = useParams();
@@ -126,6 +127,7 @@ export default function QuizzesByCategory() {
 
   return (
     <Box>
+      <Layout1 headerTitle={'Category Quiz'}/>
       <>
         <Container>
           <AddnewRowTable />

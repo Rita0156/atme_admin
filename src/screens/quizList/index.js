@@ -6,6 +6,7 @@ import MUIDataTable from "mui-datatables";
 import { useNavigate } from "react-router-dom";
 import DeleteEditeTableTooltip from "../../components/updateAndDelete/index.js";
 import axios from "axios";
+import Layout1 from "../../components/layout/Layout.js";
 
 export default function QuizList() {
   const [page, setPage] = useState(0);
@@ -126,6 +127,7 @@ export default function QuizList() {
 
   return (
     <Box>
+      <Layout1 headerTitle={'Quiz'}/>
       <Container>
       <>
         <MUIDataTable

@@ -14,9 +14,13 @@ import CategoryIcon from '@mui/icons-material/Category';
 import QuizIcon from '@mui/icons-material/Quiz';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import { Link } from 'react-router-dom';
+import MenuIcon from '@mui/icons-material/Menu'; // Import MenuIcon
+
+
 const drawerWidth = 240;
+
 function ResponsiveDrawer(props) {
-  const { window } = props;
+  const { window,onItemClick} = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
   const handleDrawerClose = () => {
@@ -38,7 +42,7 @@ function ResponsiveDrawer(props) {
       case 'Category':
         return '/'; 
       case 'Quiz':
-        return '/contests/:id'; 
+        return '/quizlist'; 
       case 'Dashboard':
         return '/dashboard'; 
       default:
@@ -50,9 +54,9 @@ function ResponsiveDrawer(props) {
     <div>
       <Toolbar />
       <Divider />
-      <List style={{marginTop:"-50px"}}>
+      <List style={{marginTop:"-60px"}}>
         {['Category', 'Quiz', 'Dashboard'].map((text, index) => (
-          <ListItem key={text} disablePadding >
+          <ListItem key={text} disablePadding onClick={() => onItemClick(text)}>
             <ListItemButton component={Link} to={getDestinationUrl(text)} >
             <ListItemIcon>
                 {index === 0 && <CategoryIcon />}
@@ -80,43 +84,36 @@ function ResponsiveDrawer(props) {
         aria-label="mailbox folders"
       >
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        {/* <Drawer
+        <Drawer
           container={container}
-          variant="temporary"
-          open={mobileOpen}
           onTransitionEnd={handleDrawerTransitionEnd}
+          open={mobileOpen}
+          variant="permanent"
           onClose={handleDrawerClose}
           ModalProps={{
             keepMounted: true, // Better open performance on mobile.
           }}
           sx={{
-            display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-          }}
-        >
-          {drawer}
-        </Drawer> */}
-        <Drawer
-          variant="permanent"
-          sx={{
             display: { xs: 'none', sm: 'block' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth,marginTop: '55px',borderRight: '0', },
+        
           }}
-          open
+          
+        
         >
           {drawer}
         </Drawer>
       </Box>
-      {/* <Box
-        component="main"
-        sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
-      >
-        <Toolbar />
+      {/* <Box component="main" sx={{ flexGrow: 2, p: 3 }}>
+        <Toolbar>
+          <MenuIcon onClick={handleDrawerToggle} />
+        </Toolbar>
       </Box> */}
     </Box>
   );
 }
 ResponsiveDrawer.propTypes = {
   window: PropTypes.func,
+  onItemClick: PropTypes.func.isRequired,
 };
 export default ResponsiveDrawer;
