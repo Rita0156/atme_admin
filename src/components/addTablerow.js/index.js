@@ -3,19 +3,12 @@ import { useState } from "react";
 import {
   Box,
   Button,
-  Modal,
-  Typography,
-  TextField,
-  Stack,
 } from "@mui/material";
 import Iconify from "../iconify";
-import { useNavigate } from "react-router-dom";
+import AddEditCategoryForm from "../editAddForm";
 export default function AddnewRowTable() {
   const [showModal, setShowModal] = useState(false);
-  const [numQuestions, setNumQuestions] = useState(0);
-  const [getQuestion, setGetQuestion] =  useState(false);
-  const navigate = useNavigate();
-
+ 
   const handleOpenModal = () => {
     setShowModal(true);
   };
@@ -23,14 +16,6 @@ export default function AddnewRowTable() {
   const handleCloseModal = () => {
     setShowModal(false);
   };
-
-  const handleAddQuestions = () => {
-    setGetQuestion(true);
-    navigate(`/question/${numQuestions}`);
-    setShowModal(false);
-  };
-
-  console.log(numQuestions, " -- from the ");
 
   return (
     <Box
@@ -53,7 +38,7 @@ export default function AddnewRowTable() {
       >
         Add Quiz
       </Button>
-      <Modal
+      {/* <Modal
         open={showModal}
         onClose={handleCloseModal}
         aria-labelledby="modal-title"
@@ -92,8 +77,8 @@ export default function AddnewRowTable() {
             </Button>
           </Stack>
         </Box>
-      </Modal>
-     
+      </Modal> */}
+     {showModal && <AddEditCategoryForm show={showModal} handleClose={handleCloseModal} title={"Add"} editData={null}/>}
     </Box>
   );
 }
