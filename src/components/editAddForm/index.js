@@ -8,6 +8,7 @@ const AddEditCategoryForm = ({ show, handleClose, title, editData }) => {
   const [noOfQuestion, setNumOfQuestion] = useState(0);
   const navigate = useNavigate();
   const name = useParams();
+  
   console.log(name, "params data");
   const [formData, setFormData] = useState({
     name: editData?.name || "",
@@ -19,7 +20,8 @@ const AddEditCategoryForm = ({ show, handleClose, title, editData }) => {
     startTime: editData?.startTime || "",
     endTime: editData?.endTime || "",
     questionSet: editData?.questionSet || { questionSet: [] },
-    quizId: editData?.quizId || [],
+    quizId: editData?.quizId || "",
+    id:editData?.id || ''
   });
 
   const handleChange = (e) => {
@@ -34,20 +36,22 @@ const AddEditCategoryForm = ({ show, handleClose, title, editData }) => {
     e.preventDefault();
     console.log("inside submit button");
     if (title === "Add" && editData == null) {
-      //  try{
-      //    const {data} = await axios.post(`https://atme-quiz.onrender.com/api/contests`,formData,{
-      //       headers : {
-      //           "Content-Type": "application/json",
-      //       }
-      //    })
-      //    console.log(data,'%%%%%%%%%%%% add data')
-      //  }
-      //  catch(err){
-      //   console.log('error', title, err)
-      //  }
+       try{
+         const {data} = await axios.post(`https://atme-quiz.onrender.com/api/contests`,formData,{
+            headers : {
+                "Content-Type": "application/json",
+            }
+         })
+         console.log(data,'%%%%%%%%%%%% add data')
+       }
+       catch(err){
+        console.log('error', title, err)
+       }
 
       navigate(`/question/${noOfQuestion}`, { state: formData });
+
       handleClose();
+
     } else {
       try {
         const { data } = await axios.put(
@@ -139,10 +143,6 @@ const AddEditCategoryForm = ({ show, handleClose, title, editData }) => {
             {title === "Add" ? title : "Submit"}
           </Button>
         </Modal.Body>
-
-    
-     
- 
     </Modal>
   );
 };

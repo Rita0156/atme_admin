@@ -5,6 +5,7 @@ import QuizzesByCategory from "./screens/categoryWiseQuiz";
 import SidePanel from "./components/sidebar";
 import QuizList from "./screens/quizList";
 import AddDataForm from "./components/addQuestionForm";
+import  { Toaster } from 'react-hot-toast';
 import Header from "./components/header";
 
 function App() {
@@ -13,13 +14,14 @@ function App() {
       <BrowserRouter>
         <div>
           {/* <Header/> */}
-        <SidePanel />
           <main className="py-3">
+            <SidePanel />
+              <Toaster position="top-right" />
             <Routes>
               <Route path="/" element={<CategoryList />} />
               <Route path="/contests/:id" element={<QuizzesByCategory />} />
               <Route path="/quizlist" element={<QuizList />} />
-              <Route path='/question/:numQuestions' element={<AddDataForm />} />
+              <Route path="/question/:numQuestions" element={<AddDataForm />} />
             </Routes>
           </main>
         </div>

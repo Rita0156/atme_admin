@@ -27,6 +27,7 @@ export default function DeleteEditeTableTooltip({ productDetails, tableMeta, com
   };
 
   const handleDeleteUser = async(id) => {
+    
       try{
         const {data} = await axios.delete(`https://atme-quiz.onrender.com/api/contests/${id}`)
         console.log(data,'%%%%%%%%%%%% delete data')

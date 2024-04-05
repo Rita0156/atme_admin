@@ -47,7 +47,7 @@ export default function QuizList() {
         customBodyRender: (value) => {
           return (
             <Box>
-              <img src={value} />
+              <img alt="" src={value} />
             </Box>
           );
         },
