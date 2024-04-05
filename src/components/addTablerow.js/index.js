@@ -158,27 +158,6 @@ export default function AddnewRowTable() {
               InputProps={{ inputProps: { min: 1 } }}
             />
 
-            {/* <DatePicker
-              label="Start Date"
-              value={formData.startDate}
-              onChange={(newValue) =>
-                setFormData({ ...formData, startDate: newValue })
-              }
-              renderInput={(params) => <TextField {...params} />}
-              fullWidth
-            />
-
-            <DatePicker
-              label="End Date"
-              value={formData.endDate}
-              onChange={(newValue) =>
-                setFormData({ ...formData, endDate: newValue })
-              }
-              renderInput={(params) => <TextField {...params} />}
-              fullWidth
-            /> */}
-
-
             <Button
               onClick={handleAddQuestions}
               variant="contained"
