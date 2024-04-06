@@ -43,10 +43,10 @@ const AddDataForm = () => {
         }
       }
 
-      if (correctAnswerCount !== 1 || !correctAnswerSelected) {
-        scrollToRefs.current[i].scrollIntoView({ behavior: "smooth" });
-        return false;
-      }
+      // if (correctAnswerCount !== 1 || !correctAnswerSelected) {
+      //   scrollToRefs.current[i].scrollIntoView({ behavior: "smooth" });
+      //   return false;
+      // }
     }
     return true;
   };
@@ -120,32 +120,32 @@ const AddDataForm = () => {
           // }
           state.questionSet.questionSet = values;
 
-          
-          for (let i = 0; i < values.length; i++) {
+          console.log(values.questions.length, " ----- lenhght to see               ")
+          for (let i = 0; i < +values?.questions?.length; i++) {
 
             console.log(" --------   inside the for loop        =-----------------------")
             const obj = {
-              question: values.question,
+              question: values.questions[i].question,
               answerOptions: [
                 {
                   option: 1,
-                  answer: values.answer[0].answer,
-                  isCorrectAnswer: values.answer[0].selected,
+                  answer: values.questions[i].answer,
+                  isCorrectAnswer: values.selected,
                 },
                 {
                   option: 2,
-                  answer: values.answer[1].answer,
-                  isCorrectAnswer: values.answer[1].selected,
+                  answer: values.answer,
+                  isCorrectAnswer: values.selected,
                 },
                 {
                   option: 3,
-                  answer: values.answer[2].answer,
-                  isCorrectAnswer: values.answer[2].selected,
+                  answer: values.answer,
+                  isCorrectAnswer: values.selected,
                 },
                 {
                   option: 4,
-                  answer: values.answer[3].answer,
-                  isCorrectAnswer: values.answer[3].selected,
+                  answer: values.answer,
+                  isCorrectAnswer: values.selected,
                 },
               ],
             };
