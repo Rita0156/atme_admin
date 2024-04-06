@@ -91,9 +91,8 @@ function ResponsiveDrawer(props) {
         <Drawer
           variant="permanent"
           sx={{
-            display: { xs: 'none', sm: 'block' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth,marginTop: '55px',borderRight: '0', },
-        
+            display: { xs: 'none', sm: 'block'  },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth,marginTop: '55px',borderRight: '0', },      
           }}
 
         >

@@ -14,6 +14,7 @@ const AddDataForm = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
   const [onAlert, setOnAlert] = useState(false);
+  const [correctAnswerSelected, setCorrectAnswerSelected] = useState(false);
 
   // console.log(onAlert, "--------------------------------")
 
@@ -27,26 +28,33 @@ const AddDataForm = () => {
         return false;
       }
 
-      let correctAnswerCount = 0;
-      let correctAnswerSelected = false;
+      // let correctAnswerCount = 0;
+      // let correctAnswerSelected = false;
       for (let j = 0; j < 4; j++) {
         const answer = question.answers[j];
         if (!answer.answer.trim()) {
           scrollToRefs.current[i].scrollIntoView({ behavior: "smooth" });
           return false;
         }
-        if (answer.correct) {
-          correctAnswerCount++;
-          if (answer.selected) {
-            correctAnswerSelected = true;
-          }
+
+        if(answer.selected)
+        {
+          setCorrectAnswerSelected(true);
+          break;
         }
+        // console.log(correctAnswerSelected, " --------------------- ")
+        // if (answer.correct) {
+        //   correctAnswerCount++;
+        //   if (answer.selected) {
+        //     correctAnswerSelected = true;
+        //   }
+        // }
       }
 
-      // if (correctAnswerCount !== 1 || !correctAnswerSelected) {
-      //   scrollToRefs.current[i].scrollIntoView({ behavior: "smooth" });
-      //   return false;
-      // }
+      if (!correctAnswerSelected) {
+        scrollToRefs.current[i].scrollIntoView({ behavior: "smooth" });
+        return false;
+      }
     }
     return true;
   };
@@ -120,10 +128,10 @@ const AddDataForm = () => {
           // }
           state.questionSet.questionSet = values;
 
-          console.log(values.questions.length, " ----- lenhght to see               ")
+          // console.log(values.questions.length, " ----- lenhght to see               ")
           for (let i = 0; i < +values?.questions?.length; i++) {
 
-            console.log(" --------   inside the for loop        =-----------------------")
+            // console.log(" --------   inside the for loop        =-----------------------")
             const obj = {
               question: values.questions[i].question,
               answerOptions: [
@@ -150,18 +158,18 @@ const AddDataForm = () => {
               ],
             };
 
-            console.log(obj, " -----------    obj      ---------------------");
+            // console.log(obj, " -----------    obj      ---------------------");
             arraydata.push(obj);
           }
-          console.log(
-            arraydata,
-            "-------------     obj corret stuctur  ----------------"
-          );
-          console.log(values, "============ to see tyhe structure  ");
-          console.log(
-            state,
-            " edddddddddddddddddddddddddddddddd          state    dddddddddddddddddddd"
-          );
+          // console.log(
+          //   arraydata,
+          //   "-------------     obj corret stuctur  ----------------"
+          // );
+          // console.log(values, "============ to see tyhe structure  ");
+          // console.log(
+          //   state,
+          //   " edddddddddddddddddddddddddddddddd          state    dddddddddddddddddddd"
+          // );
           // try {
           //   const { data } = await axios.post(
           //     `https://atme-quiz.onrender.com/api/contests`,
@@ -176,7 +184,7 @@ const AddDataForm = () => {
           // } catch (err) {
           //   console.log("error", err);
           // }
-          console.log(values);
+          // console.log(values);
           navigate("/");
           setSubmitting(false);
         }}
