@@ -23,14 +23,15 @@ const drawerWidth = 240;
 function ResponsiveDrawer(props) {
  
   const [modalOpen, setModalOpen] = React.useState(false);
+  const { window , onItemClick} = props;
   const [selectedItem, setSelectedItem] = React.useState(null);
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [isClosing, setIsClosing] = React.useState(false);
 
   const handleOpenModal = (item) => {
     setModalOpen(true);
     setSelectedItem(item);
-  const { window,onItemClick} = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [isClosing, setIsClosing] = React.useState(false);
+  }
   const handleDrawerClose = () => {
     setIsClosing(true);
     setMobileOpen(false);
@@ -46,26 +47,15 @@ function ResponsiveDrawer(props) {
       case 'Category':
         return '/';
       case 'Quiz':
-        return 'quizlist';
+        return '/quizlist';
       case 'Dashboard':
-        return '/dashboard';
+        return '/';
       default:
         return '/';
     }
   };
   
-  const getDestinationUrl = (text) => {
-    switch (text) {
-      case 'Category':
-        return '/'; 
-      case 'Quiz':
-        return '/quizlist'; 
-      case 'Dashboard':
-        return '/dashboard'; 
-      default:
-        return '/'; 
-    }
-  };
+ 
   
   const drawer = (
     <div>
@@ -89,9 +79,6 @@ function ResponsiveDrawer(props) {
       <Divider />
     </div>
   );
-  // Remove this const when copying and pasting into your project.
-  
-  const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -108,8 +95,7 @@ function ResponsiveDrawer(props) {
             '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth,marginTop: '55px',borderRight: '0', },
         
           }}
-          
-        
+
         >
           {drawer}
         </Drawer>

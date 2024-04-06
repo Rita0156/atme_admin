@@ -5,7 +5,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
-import toast from 'react-hot-toast';
+import toast from "react-hot-toast";
 
 const AddDataForm = () => {
   const { numQuestions } = useParams();
@@ -14,10 +14,9 @@ const AddDataForm = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
   const [onAlert, setOnAlert] = useState(false);
-  
 
   // console.log(onAlert, "--------------------------------")
- 
+
   const validateForm = (values) => {
     setOnAlert(true);
     for (let i = 0; i < questionCount; i++) {
@@ -82,27 +81,101 @@ const AddDataForm = () => {
             return {};
           }
         }}
-        
-
         onSubmit={async (values, { setSubmitting }) => {
-          
-          console.log(onAlert, "--------------------------------")
-          toast.success('Quiz Added ')
+          // console.log(state, "--------------------------------")
+          toast.success("Quiz Added ");
+          var arraydata = [];
+
+          // for (let i = 0; i < values.length; i++) {
+
+          //   console.log(" --------   inside the for loop        =-----------------------")
+          //   const obj = {
+          //     question: values.question,
+          //     answerOptions: [
+          //       {
+          //         option: 1,
+          //         answer: values.answer[0].answer,
+          //         isCorrectAnswer: values.answer[0].selected,
+          //       },
+          //       {
+          //         option: 2,
+          //         answer: values.answer[1].answer,
+          //         isCorrectAnswer: values.answer[1].selected,
+          //       },
+          //       {
+          //         option: 3,
+          //         answer: values.answer[2].answer,
+          //         isCorrectAnswer: values.answer[2].selected,
+          //       },
+          //       {
+          //         option: 4,
+          //         answer: values.answer[3].answer,
+          //         isCorrectAnswer: values.answer[3].selected,
+          //       },
+          //     ],
+          //   };
+
+          //   console.log(obj, " -----------    obj      ---------------------");
+          //   arraydata.push(obj);
+          // }
           state.questionSet.questionSet = values;
-          try {
-            const { data } = await axios.post(
-              `https://atme-quiz.onrender.com/api/contests`,
-              state,
-              {
-                headers: {
-                  "Content-Type": "application/json",
+
+          
+          for (let i = 0; i < values.length; i++) {
+
+            console.log(" --------   inside the for loop        =-----------------------")
+            const obj = {
+              question: values.question,
+              answerOptions: [
+                {
+                  option: 1,
+                  answer: values.answer[0].answer,
+                  isCorrectAnswer: values.answer[0].selected,
                 },
-              }
-            );
-            // console.log(data, "%%%%%%%%%%%% add data");
-          } catch (err) {
-            console.log("error", err);
+                {
+                  option: 2,
+                  answer: values.answer[1].answer,
+                  isCorrectAnswer: values.answer[1].selected,
+                },
+                {
+                  option: 3,
+                  answer: values.answer[2].answer,
+                  isCorrectAnswer: values.answer[2].selected,
+                },
+                {
+                  option: 4,
+                  answer: values.answer[3].answer,
+                  isCorrectAnswer: values.answer[3].selected,
+                },
+              ],
+            };
+
+            console.log(obj, " -----------    obj      ---------------------");
+            arraydata.push(obj);
           }
+          console.log(
+            arraydata,
+            "-------------     obj corret stuctur  ----------------"
+          );
+          console.log(values, "============ to see tyhe structure  ");
+          console.log(
+            state,
+            " edddddddddddddddddddddddddddddddd          state    dddddddddddddddddddd"
+          );
+          // try {
+          //   const { data } = await axios.post(
+          //     `https://atme-quiz.onrender.com/api/contests`,
+          //     state,
+          //     {
+          //       headers: {
+          //         "Content-Type": "application/json",
+          //       },
+          //     }
+          //   );
+          //   // console.log(data, "%%%%%%%%%%%% add data");
+          // } catch (err) {
+          //   console.log("error", err);
+          // }
           console.log(values);
           navigate("/");
           setSubmitting(false);
@@ -198,11 +271,13 @@ const AddDataForm = () => {
                       </Form.Group>
                     ))}
                   </div>
-                {!question.answers.some((answer) => answer.selected) && onAlert && (
-                    <Alert variant="danger">
-                      Please select the correct answer for Question {questionIndex + 1}.
-                    </Alert>
-                  ) }
+                  {!question.answers.some((answer) => answer.selected) &&
+                    onAlert && (
+                      <Alert variant="danger">
+                        Please select the correct answer for Question{" "}
+                        {questionIndex + 1}.
+                      </Alert>
+                    )}
                 </Card.Body>
               </Card>
             ))}
