@@ -14,6 +14,7 @@ import Layout1 from "../../components/layout/Layout.js";
 export default function CategoryList() {
   const [page, setPage] = useState(0);
   const [quizData, setQuizdata] = useState([]);
+  const [fromCategory, setFromCategory] = useState(false);
   const navigate = useNavigate();
 
   const getData = async () => {
@@ -75,6 +76,7 @@ export default function CategoryList() {
         customBodyRender: (value, tableMeta, updateValue) => {
           return (
             <DeleteEditeTableTooltip
+              fromCategory={fromCategory}
               productDetails={quizData}
               tableMeta={tableMeta}
             />

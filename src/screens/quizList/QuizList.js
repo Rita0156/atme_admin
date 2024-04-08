@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 // material
-import { Box,Container } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import MUIDataTable from "mui-datatables";
 import { useNavigate } from "react-router-dom";
 import DeleteEditeTableTooltip from "../../components/updateAndDelete/DeleteEditeTableTooltip.js";
@@ -11,21 +11,22 @@ import Layout1 from "../../components/layout/Layout.js";
 export default function QuizList() {
   const [page, setPage] = useState(0);
   const [quizData, setQuizdata] = useState([]);
+  const [fromCategory, setFromCategory] = useState(true);
   const navigate = useNavigate();
-   
+
+  
   const getData = async () => {
     const { data } = await axios.get(
       "https://atme-quiz.onrender.com/api/contests"
     );
-
-    console.log(data, ' =============================== ')
     setQuizdata(data);
+    console.log(data, ' ddddddddddddddddddd')
   };
 
   useEffect(() => {
     getData();
   }, []);
-  
+
   const columns = [
     {
       name: "id",
@@ -57,7 +58,7 @@ export default function QuizList() {
       },
     },
     {
-      name: "name",
+      name: "category",
       label: "Category Name",
       display: true,
       options: {
@@ -69,14 +70,14 @@ export default function QuizList() {
     },
 
     {
-      name: "winningCoins",
+      name: "name",
       label: "Contest Name",
       display: true,
       options: {
         filter: true,
         sort: true,
         // view?.state,
-        customBodyRender: (value) => "Play and Win " + value,
+        customBodyRender: (value) => (value ? value : "-"),
       },
     },
 
@@ -95,6 +96,7 @@ export default function QuizList() {
         customBodyRender: (value, tableMeta, updateValue) => {
           return (
             <DeleteEditeTableTooltip
+              fromCategory={fromCategory}
               productDetails={quizData}
               tableMeta={tableMeta}
             />
@@ -114,9 +116,7 @@ export default function QuizList() {
     filterType: "dropdown",
     responsive: "standard",
     selectableRows: "none",
-    onRowClick: (rowData) => {
-    
-    },
+    onRowClick: (rowData) => {},
     onViewColumnsChange: (changedColumn, action) => {},
     page: page,
     onTableChange: (action, tableState) => {
@@ -129,16 +129,16 @@ export default function QuizList() {
 
   return (
     <Box>
-      <Layout1 headerTitle={'All Quiz'}/>
+      <Layout1 headerTitle={"All Quiz"} />
       <Container>
-      <>
-        <MUIDataTable
-          title={"Contests Table"}
-          data={quizData}
-          columns={columns}
-          options={options}
-        />
-      </>
+        <>
+          <MUIDataTable
+            title={"Contests Table"}
+            data={quizData}
+            columns={columns}
+            options={options}
+          />
+        </>
       </Container>
     </Box>
   );

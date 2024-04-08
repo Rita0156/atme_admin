@@ -21,8 +21,8 @@ function ResponsiveDrawer(props) {
   const [modalOpen, setModalOpen] = React.useState(false);
   const { window , onItemClick} = props;
   const [selectedItem, setSelectedItem] = React.useState(null);
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [isClosing, setIsClosing] = React.useState(false);
+ const [fromSidebar, setFromSideBar] = React.useState(true);
+
   const handleOpenModal = (item) => {
     setModalOpen(true);
     setSelectedItem(item);
@@ -84,7 +84,7 @@ function ResponsiveDrawer(props) {
           {drawer}
         </Drawer>
       </Box>
-      { modalOpen && <AddQuiz show={modalOpen} handleClose={handleCloseModal} />}
+      { modalOpen && <AddQuiz show={modalOpen} handleClose={handleCloseModal} fromSidebar={fromSidebar} />}
     </Box>
   );
 } 

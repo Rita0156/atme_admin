@@ -9,15 +9,14 @@ const AddEditCategoryForm = ({ show, handleClose, title, editData }) => {
   const navigate = useNavigate();
   const name = useParams();
 
-  console.log(title, "  params data - - ");
+  console.log(name, "  params data - ooo - ");
 
-  // console.log(editData, " 00000000000 to see from add row page ")
   const [formData, setFormData] = useState({
-    name: editData?.category || name.id,
+    name: editData?.category || '',
     quizImage: editData?.quizImage || "",
     entryCoins: editData?.entryCoins || "",
-    questionSet: editData?.questionSet || { questionSet: [] },
-
+    
+    Time: 60,
   });
 
   const handleChange = (e) => {
@@ -28,10 +27,7 @@ const AddEditCategoryForm = ({ show, handleClose, title, editData }) => {
     });
   };
 
-  console.log(
-    formData,
-    " jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj "
-  );
+  console.log(editData?.category," ddddddddddddddddddddddddddddd")
 
   const handleSubmit = async (e) => {
     e.preventDefault();

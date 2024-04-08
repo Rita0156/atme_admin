@@ -14,14 +14,16 @@ export default function QuizzesByCategory() {
   const name = useParams();
   const [page, setPage] = useState(0);
   const [quizData, setQuizdata] = useState([]);
+  const [fromCategory, setFromCategory] = useState(true);
   const navigate = useNavigate();
+
   const [image, setImage] = useState();
 
   const getData = async () => {
     const { data } = await axios.get(
       "https://atme-quiz.onrender.com/api/contests/category/" + `${name.id}`
     );
-    console.log(data.quizImage, " ======================= ");
+
     setImage(data.quizImage);
     setQuizdata(data.quizzes);
   };
@@ -101,6 +103,7 @@ export default function QuizzesByCategory() {
         customBodyRender: (value, tableMeta, updateValue) => {
           return (
             <DeleteEditeTableTooltip
+              fromCategory={fromCategory}
               productDetails={quizData}
               tableMeta={tableMeta}
             />

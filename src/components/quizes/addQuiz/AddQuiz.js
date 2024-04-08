@@ -5,12 +5,24 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import "../../../styles/form.css";
 
-const AddQuiz = ({ show, handleClose, title, editData }) => {
+const AddQuiz = ({ show, handleClose, title, editData, fromSidebar }) => {
   const [noOfQuestion, setNumOfQuestion] = useState(0);
   const navigate = useNavigate();
   const [quizData, setQuizdata] = useState([]);
 
   const name = useParams();
+
+  const getData = async () => {
+    const { data } = await axios.get(
+      "https://atme-quiz.onrender.com/api/contests/all/category"
+    );
+    setQuizdata(data);
+  };
+
+  // console.log(quizData, ' 000000000000000000000000000000000000000000000000000000000 ')
+  useEffect(() => {
+    getData();
+  }, []);
 
   const [formData, setFormData] = useState({
     name: editData?.name || "",
@@ -20,18 +32,6 @@ const AddQuiz = ({ show, handleClose, title, editData }) => {
     questionSet: editData?.questionSet || { questionSet: [] },
     quizId: editData?.quizId || [],
   });
-
-  // const getData = async () => {
-  //   const { data } = await axios.get(
-  //     "https://atme-quiz.onrender.com/api/contests/category/CONTEST"
-  //   );
-  //   setQuizdata(data);
-  //   console.log(quizData, " = tot vgb ========================== ");
-  // };
-
-  // useEffect(() => {
-  //   getData();
-  // }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -88,11 +88,37 @@ const AddQuiz = ({ show, handleClose, title, editData }) => {
             style={{ paddingBottom: "10px" }}
           >
             <Form.Label>Category Name</Form.Label>
-            <Form.Control
-               type="text"
-               name="category"
-               value={formData.category}
-               onChange={handleChange}/>
+            {fromSidebar ? (
+              <>
+                <Form.Select onChange={handleChange} name="categoryName">
+                  <option value="">Choose...</option>
+                  {quizData?.map((item, index) => (
+                    <option key={index} value={item.name}>
+                      {item.category}
+                    </option>
+                  ))}
+                  <option value="Other">Other</option>
+                </Form.Select>
+
+                {formData.categoryName === "Other" && (
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter new category name"
+                    value={formData.otherCategoryName}
+                    onChange={handleChange}
+                    name="otherCategoryName"
+                    style={{ marginTop: "10px" }}
+                  />
+                )}
+              </>
+            ) : (
+              <Form.Control
+                type="text"
+                name="category"
+                value={formData.category}
+                onChange={handleChange}
+              />
+            )}
           </Form.Group>
 
           <Form.Group controlId="entryCoins" style={{ paddingBottom: "10px" }}>
@@ -104,19 +130,6 @@ const AddQuiz = ({ show, handleClose, title, editData }) => {
               onChange={handleChange}
             />
           </Form.Group>
-
-          {/* <Form.Group
-            controlId="winningCoins"
-            style={{ paddingBottom: "10px" }}
-          >
-            <Form.Label>Winning Coins</Form.Label>
-            <Form.Control
-              type="number"
-              name="winningCoins"
-              value={formData.winningCoins}
-              onChange={handleChange}
-            />
-          </Form.Group> */}
 
           <Form.Group style={{ paddingBottom: "10px" }}>
             <Form.Label>How many questions do you want to add?</Form.Label>

@@ -5,24 +5,20 @@ import { Box, Tooltip, IconButton } from "@mui/material";
 import Iconify from "../iconify";
 import AddEditCategoryForm from "../category/editForm/EditCategoryForm";
 import axios from "axios";
+import AddQuiz from "../quizes/addQuiz/AddQuiz";
 
 export default function DeleteEditeTableTooltip({
   productDetails,
   tableMeta,
+  fromCategory,
   compoData,
 }) {
-  //  const dispatch = useDispatch()
+
+
   const [showModalEdit, setShowEditForm] = useState(false);
   const [productDetailsdata, setProductDetailsdata] = useState({});
 
-  // console.log("  from the update and ddelete form ", productDetails);
-
-  // console.log(tableMeta?.rowData[1], " 0000000000000000000000000000 ");
-
-  // console.log("  from the dlkckdcnffffffffff ", productDetails[0]?.category);
-
   const handleEditClick = (id) => {
-    // console.log(id, "ed  it id btn clicked");
     for (let i = 0; i < productDetails?.length; i++) {
       if (productDetails[i]?.category === id) {
         setProductDetailsdata(productDetails[i]);
@@ -31,21 +27,16 @@ export default function DeleteEditeTableTooltip({
     setShowEditForm(true);
   };
 
-  // console.log(
-  //   "  from the update and kkkkkkkkkkkkkkkkkkkkkkkkk ddelete form  part 2 ",
-  //   productDetailsdata
-  // );
-
   const handleEditClose = () => {
     setShowEditForm(false);
   };
 
+  console.log(fromCategory, " sssssssssssssssss")
   const handleDeleteUser = async (id) => {
     try {
       const { data } = await axios.delete(
         `https://atme-quiz.onrender.com/api/contests/${id}`
       );
-      // console.log(data, "%%%%%%%%%%%% delete data");
     } catch (err) {
       console.log(err, "%%%%%%%%%%%% delete data");
     }
@@ -71,16 +62,23 @@ export default function DeleteEditeTableTooltip({
         </IconButton>
 
         <div>
-          {showModalEdit && (
+          {showModalEdit && !fromCategory ?
             <AddEditCategoryForm
               show={showModalEdit}
               handleClose={handleEditClose}
               title="Edit"
               editData={productDetailsdata}
             />
-          )}
+            :  <AddQuiz
+            show={showModalEdit}
+            handleClose={handleEditClose}
+            title="Edit"
+            editData={productDetailsdata}
+          />
+          }
         </div>
       </Tooltip>
+      {fromCategory &&    
       <Tooltip title="Delete">
         <IconButton
           onClick={(e) => {
@@ -92,6 +90,7 @@ export default function DeleteEditeTableTooltip({
           <Iconify icon={"eva:trash-2-outline"} />
         </IconButton>
       </Tooltip>
+      }
     </Box>
   );
 }
