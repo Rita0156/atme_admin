@@ -15,10 +15,15 @@ const AddDataForm = () => {
   const [onAlert, setOnAlert] = useState(false);
   // console.log(onAlert, "--------------------------------")
   const validateForm = (values) => {
-    setOnAlert(true);
+
+   
+
+    console.log(onAlert, " ============= to see  ====")
     for (let i = 0; i < questionCount; i++) {
       const question = values.questions[i];
-      if (!question.question.trim()) {
+      console.log(question, " ------------------ ")
+
+      if (!question.question.trim() && onAlert) {
         scrollToRefs.current[i].scrollIntoView({ behavior: "smooth" });
         return false;
       }
@@ -26,6 +31,10 @@ const AddDataForm = () => {
       let correctAnswerSelected = false;
       for (let j = 0; j < 4; j++) {
         const answer = question.answers[j];
+        if (!answer.answer.trim()) {
+          scrollToRefs.current[i].scrollIntoView({ behavior: "smooth" });
+          return false;
+        }
         if (answer.selected) {
           correctAnswerSelected = true;
           break;
@@ -69,8 +78,9 @@ const AddDataForm = () => {
           }
         }}
         onSubmit={async (values, { setSubmitting }) => {
-          setOnAlert(false);
-          toast.success("Quiz Added ");
+          setOnAlert(true);
+          // setOnAlert(false);
+        
           // console.log(values.questions.length, "**************");
           const arrayData = [];
           values.questions?.map((ele) => {
@@ -120,7 +130,8 @@ const AddDataForm = () => {
           //   console.log("error", err);
           // }
           // console.log(values);
-          navigate("/");
+          toast.success("Quiz Added ");
+          // navigate("/");
           setSubmitting(false);
         }}
       >
@@ -209,8 +220,9 @@ const AddDataForm = () => {
                                 value: updatedAnswers,
                               },
                             });
-                          }}
-                        />
+                          }} 
+                          />
+                          {answer.selected && <span style={{ color :  "green" , marginLeft: "5px" , marginRight:"5px"}}>Correct Answer </span>}
                       </Form.Group>
                     ))}
                   </div>

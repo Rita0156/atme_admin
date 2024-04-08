@@ -14,7 +14,7 @@ function App() {
         <div>
        
           <main className="py-3">
-            <SidePanel />
+            {/* <SidePanel /> */}
             <Toaster position="top-right" />
             <Routes>
               <Route path="/" element={<CategoryList />} />
