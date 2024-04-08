@@ -127,7 +127,7 @@ export default function QuizList() {
 
   return (
     <Box>
-      <Layout1 headerTitle={'Quiz'}/>
+      <Layout1 headerTitle={'All Quiz'}/>
       <Container>
       <>
         <MUIDataTable

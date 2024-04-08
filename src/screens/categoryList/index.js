@@ -123,8 +123,8 @@ export default function CategoryList() {
   return (
     <Box>
       <>
-   <Layout1 headerTitle={'Category'}/>
-        <Container>
+   <Layout1 headerTitle={'All Category'}/>
+        <Container >
           <AddCategoryRow />
 
           <MUIDataTable

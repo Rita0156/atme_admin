@@ -5,8 +5,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
-import toast from 'react-hot-toast';
-
+import toast from "react-hot-toast";
 const AddDataForm = () => {
   const { numQuestions } = useParams();
   const questionCount = +numQuestions + 1;
@@ -14,44 +13,32 @@ const AddDataForm = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
   const [onAlert, setOnAlert] = useState(false);
-  
-
   // console.log(onAlert, "--------------------------------")
- 
   const validateForm = (values) => {
-    setOnAlert(true);
+    console.log(onAlert, " ============= to see  ====")
     for (let i = 0; i < questionCount; i++) {
       const question = values.questions[i];
-
-      if (!question.question.trim()) {
+      console.log(question, " ------------------ ")
+      if (!question.question.trim() && onAlert) {
         scrollToRefs.current[i].scrollIntoView({ behavior: "smooth" });
         return false;
       }
-
       let correctAnswerCount = 0;
       let correctAnswerSelected = false;
       for (let j = 0; j < 4; j++) {
         const answer = question.answers[j];
-        if (!answer.answer.trim()) {
-          scrollToRefs.current[i].scrollIntoView({ behavior: "smooth" });
-          return false;
-        }
-        if (answer.correct) {
-          correctAnswerCount++;
-          if (answer.selected) {
-            correctAnswerSelected = true;
-          }
+        if (answer.selected) {
+          correctAnswerSelected = true;
+          break;
         }
       }
-
-      if (correctAnswerCount !== 1 || !correctAnswerSelected) {
+      if(!correctAnswerSelected){
         scrollToRefs.current[i].scrollIntoView({ behavior: "smooth" });
         return false;
       }
     }
     return true;
   };
-
   return (
     <Container style={{ paddingRight: "24px" }}>
       <Formik
@@ -82,29 +69,60 @@ const AddDataForm = () => {
             return {};
           }
         }}
-        
-
         onSubmit={async (values, { setSubmitting }) => {
-          
-          console.log(onAlert, "--------------------------------")
-          toast.success('Quiz Added ')
-          state.questionSet.questionSet = values;
-          try {
-            const { data } = await axios.post(
-              `https://atme-quiz.onrender.com/api/contests`,
-              state,
-              {
-                headers: {
-                  "Content-Type": "application/json",
+          setOnAlert(true);
+          // setOnAlert(false);
+          toast.success("Quiz Added ");
+          // console.log(values.questions.length, "**************");
+          const arrayData = [];
+          values.questions?.map((ele) => {
+            console.log("inside map function");
+            const obj = {
+              question: ele.question,
+              answerOptions: [
+                {
+                  option: 1,
+                  answer: ele.answers[0].answer,
+                  isCorrectAnswer: ele.answers[0].selected,
                 },
-              }
-            );
-            // console.log(data, "%%%%%%%%%%%% add data");
-          } catch (err) {
-            console.log("error", err);
-          }
-          console.log(values);
-          navigate("/");
+                {
+                  option: 2,
+                  answer: ele.answers[1].answer,
+                  isCorrectAnswer: ele.answers[1].selected,
+                },
+                {
+                  option: 3,
+                  answer: ele.answers[2].answer,
+                  isCorrectAnswer: ele.answers[2].selected,
+                },
+                {
+                  option: 4,
+                  answer: ele.answers[3].answer,
+                  isCorrectAnswer: ele.answers[3].selected,
+                },
+              ],
+            };
+            arrayData.push(obj);
+          });
+          // console.log(arrayData,'array data ================')
+          state.questionSet.questionSet = arrayData;
+          console.log(state, "state");
+          // try {
+          //   const { data } = await axios.post(
+          //     `https://atme-quiz.onrender.com/api/contests`,
+          //     state,
+          //     {
+          //       headers: {
+          //         "Content-Type": "application/json",
+          //       },
+          //     }
+          //   );
+          //   // console.log(data, "%%%%%%%%%%%% add data");
+          // } catch (err) {
+          //   console.log("error", err);
+          // }
+          // console.log(values);
+          // navigate("/");
           setSubmitting(false);
         }}
       >
@@ -198,11 +216,13 @@ const AddDataForm = () => {
                       </Form.Group>
                     ))}
                   </div>
-                {!question.answers.some((answer) => answer.selected) && onAlert && (
-                    <Alert variant="danger">
-                      Please select the correct answer for Question {questionIndex + 1}.
-                    </Alert>
-                  ) }
+                  {!question.answers.some((answer) => answer.selected) &&
+                    onAlert && (
+                      <Alert variant="danger">
+                        Please select the correct answer for Question{" "}
+                        {questionIndex + 1}.
+                      </Alert>
+                    )}
                 </Card.Body>
               </Card>
             ))}
@@ -229,5 +249,4 @@ const AddDataForm = () => {
     </Container>
   );
 };
-
 export default AddDataForm;
