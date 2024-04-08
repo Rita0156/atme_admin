@@ -127,7 +127,7 @@ export default function QuizzesByCategory() {
 
   return (
     <Box>
-      <Layout1 headerTitle={'Category Quiz'}/>
+      <Layout1 headerTitle={'Category Wise Quiz'}/>
       <>
         <Container>
           <AddnewRowTable />

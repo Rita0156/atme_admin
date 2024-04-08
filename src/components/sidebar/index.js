@@ -14,34 +14,24 @@ import CategoryIcon from "@mui/icons-material/Category";
 import QuizIcon from "@mui/icons-material/Quiz";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import Iconify from "../iconify";
-// import Modal from "./Modal"; // Import your Modal component
 import AddQuiz from "../addQuiz";
 import { Link } from "react-router-dom";
-
 const drawerWidth = 240;
-
 function ResponsiveDrawer(props) {
- 
   const [modalOpen, setModalOpen] = React.useState(false);
   const { window , onItemClick} = props;
   const [selectedItem, setSelectedItem] = React.useState(null);
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
-
   const handleOpenModal = (item) => {
     setModalOpen(true);
     setSelectedItem(item);
   }
-  const handleDrawerClose = () => {
-    setIsClosing(true);
-    setMobileOpen(false);
-  };
 
   const handleCloseModal = () => {
     setModalOpen(false);
     setSelectedItem(null);
   };
-
   const getDestinationUrl = (text) => {
     switch (text) {
       case 'Category':
@@ -54,9 +44,6 @@ function ResponsiveDrawer(props) {
         return '/';
     }
   };
-  
- 
-  
   const drawer = (
     <div>
       <Toolbar />
@@ -69,7 +56,7 @@ function ResponsiveDrawer(props) {
                 {index === 0 && <CategoryIcon />}
                 {index === 1 && <QuizIcon />}
                 {index === 2 && <DashboardIcon />}
-              </ListItemIcon> 
+              </ListItemIcon>
               <ListItemText primary={text} />
               {index === 1 && <Iconify icon="eva:plus-fill"  onClick={() => handleOpenModal(text)} />}
             </ListItemButton>
@@ -79,7 +66,6 @@ function ResponsiveDrawer(props) {
       <Divider />
     </div>
   );
-
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -91,10 +77,9 @@ function ResponsiveDrawer(props) {
         <Drawer
           variant="permanent"
           sx={{
-            display: { xs: 'none', sm: 'block'  },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth,marginTop: '55px',borderRight: '0', },      
+            display: { xs: 'none', sm: 'none',md:"block",lg:"block"},
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth,marginTop: '55px',borderRight: '0', },
           }}
-
         >
           {drawer}
         </Drawer>
@@ -102,11 +87,9 @@ function ResponsiveDrawer(props) {
       { modalOpen && <AddQuiz show={modalOpen} handleClose={handleCloseModal} />}
     </Box>
   );
-}
-
+} 
 ResponsiveDrawer.propTypes = {
   window: PropTypes.func,
   onItemClick: PropTypes.func.isRequired,
 };
-
 export default ResponsiveDrawer;
