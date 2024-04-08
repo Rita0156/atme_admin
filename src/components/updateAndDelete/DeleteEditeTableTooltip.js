@@ -18,15 +18,29 @@ export default function DeleteEditeTableTooltip({
   const [showModalEdit, setShowEditForm] = useState(false);
   const [productDetailsdata, setProductDetailsdata] = useState({});
 
+  // console.log(productDetails, " kkkkkkkkkkkkkk")
+// console.log(tableMeta?.rowData[0], "9999999999999999" )
   const handleEditClick = (id) => {
-    for (let i = 0; i < productDetails?.length; i++) {
-      if (productDetails[i]?.category === id) {
-        setProductDetailsdata(productDetails[i]);
+    if(fromCategory)
+    {
+      for (let i = 0; i < productDetails?.length; i++) {
+        if (productDetails[i]?.id === id ) {
+          setProductDetailsdata(productDetails[i]);
+        }
       }
     }
-    console.log(productDetailsdata, " hhhhhhhhhhhhhhhhhhhhhhhhhh")
+    else
+    {
+
+      for (let i = 0; i < productDetails?.length; i++) {
+        if (productDetails[i]?.category === id ) {
+          setProductDetailsdata(productDetails[i]);
+        }
+      }
+    }
     setShowEditForm(true);
   };
+  // console.log(productDetailsdata, " hhhhhhhhhhhhhhhhhhhhhhhhhh")
 
   const handleEditClose = () => {
     setShowEditForm(false);
@@ -43,7 +57,7 @@ export default function DeleteEditeTableTooltip({
     }
   };
 
-  console.log(productDetailsdata, 'sssssssssssss')
+  // console.log(productDetailsdata, 'sssssssssssss')
 
   return (
     <Box
@@ -57,7 +71,8 @@ export default function DeleteEditeTableTooltip({
         <IconButton
           onClick={(e) => {
             e.stopPropagation();
-            handleEditClick(tableMeta?.rowData[1]);
+            {fromCategory ? handleEditClick(tableMeta?.rowData[0]) : handleEditClick(tableMeta?.rowData[1]);}
+            // handleEditClick(tableMeta?.rowData[1]);
           }}
           sx={{ marginRight: "12px" }}
         >

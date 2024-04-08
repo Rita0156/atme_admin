@@ -18,6 +18,7 @@ const AddEditCategoryForm = ({ show, handleClose, title, editData }) => {
     Time: 60,
   });
 
+  // console.log(title, " ffffffffffffffffffffffffffffffffffffff")
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -26,7 +27,7 @@ const AddEditCategoryForm = ({ show, handleClose, title, editData }) => {
     });
   };
 
-  console.log(editData?.category," ddddddddddddddddddddddddddddd")
+  // console.log(editData?.category," ddddddddddddddddddddddddddddd")
 
   const handleSubmit = async (e) => {
     e.preventDefault();

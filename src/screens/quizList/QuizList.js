@@ -20,7 +20,7 @@ export default function QuizList() {
       "https://atme-quiz.onrender.com/api/contests"
     );
     setQuizdata(data);
-    console.log(data, ' ddddddddddddddddddd')
+    // console.log(data, ' ddddddddddddddddddd')
   };
 
   useEffect(() => {

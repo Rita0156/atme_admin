@@ -19,7 +19,7 @@ const AddDataForm = () => {
     // console.log(onAlert, " ============= to see  ====");
     for (let i = 0; i < questionCount; i++) {
       const question = values.questions[i];
-      console.log(question, " ------------------ ");
+      // console.log(question, " ------------------ ");
 
       if (!question.question.trim() && onAlert) {
         scrollToRefs.current[i].scrollIntoView({ behavior: "smooth" });
