@@ -21,6 +21,7 @@ import AddnewRowTable from "../../components/addTablerow.js";
 // import { useDispatch, useSelector } from "react-redux";
 import DeleteEditeTableTooltip from "../../components/updateAndDelete/index.js";
 import axios from "axios";
+import SidePanel from "../../components/sidePanel/SidePanel.js";
 
 export default function CategoryList({ props }) {
   const csvLinkRef = React.useRef(null);
@@ -88,6 +89,7 @@ useEffect(()=>{
         customBodyRender: (value) => value,
       },
     },
+    
     {
       name: "quizImage",
       label: "Contests",
@@ -170,8 +172,9 @@ useEffect(()=>{
 
   return (
     <Box>
-     
+     <SidePanel/>
         <>
+        
           <AddnewRowTable />
 
           <MUIDataTable
