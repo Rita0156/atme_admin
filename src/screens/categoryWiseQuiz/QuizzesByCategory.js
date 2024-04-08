@@ -5,8 +5,8 @@ import { useParams } from "react-router-dom";
 import { Box, Container } from "@mui/material";
 import MUIDataTable from "mui-datatables";
 import { useNavigate } from "react-router-dom";
-import AddnewRowTable from "../../components/addTablerow.js";
-import DeleteEditeTableTooltip from "../../components/updateAndDelete/index.js";
+import AddnewRowTable from "../../components/quizes/addTablerow.js/AddnewRowTable.js";
+import DeleteEditeTableTooltip from "../../components/updateAndDelete/DeleteEditeTableTooltip.js";
 import axios from "axios";
 import Layout1 from "../../components/layout/Layout.js";
 
@@ -15,14 +15,18 @@ export default function QuizzesByCategory() {
   const [page, setPage] = useState(0);
   const [quizData, setQuizdata] = useState([]);
   const navigate = useNavigate();
+  const [image, setImage] = useState();
 
   const getData = async () => {
     const { data } = await axios.get(
       "https://atme-quiz.onrender.com/api/contests/category/" + `${name.id}`
     );
-    setQuizdata(data);
+    console.log(data.quizImage, " ======================= ");
+    setImage(data.quizImage);
+    setQuizdata(data.quizzes);
   };
 
+  console.log(name);
   useEffect(() => {
     getData();
   }, []);
@@ -34,7 +38,7 @@ export default function QuizzesByCategory() {
       display: true,
       options: {
         filter: false,
-        display: quizData._id,
+        display: quizData?.id,
 
         viewColumns: false,
         customBodyRender: (value) => value,
@@ -46,37 +50,39 @@ export default function QuizzesByCategory() {
       options: {
         filter: true,
         sort: true,
-        setCellProps: () => ({ style: { width: "150px" , paddingLeft:"40px", paddingRight:"160px" } }),
+        setCellProps: () => ({
+          style: { width: "150px", paddingLeft: "40px", paddingRight: "160px" },
+        }),
 
         customBodyRender: (value) => {
           return (
             <Box>
-              <img  alt="" src={value} />
+              <img alt="" src={image} />
             </Box>
           );
         },
       },
     },
     {
-      name: "name",
+      name: "name.id",
       label: "Category Name",
       display: true,
       options: {
         filter: false,
         sort: true,
 
-        customBodyRender: (value) => (value ? value : "-"),
+        customBodyRender: (value) => name.id,
       },
     },
 
     {
-      name: "winningCoins",
+      name: "name",
       label: "Quiz Name",
       display: true,
       options: {
         filter: true,
         sort: true,
-        customBodyRender: (value) => "Play and Win " + value,
+        customBodyRender: (value) => value,
       },
     },
 
@@ -127,7 +133,7 @@ export default function QuizzesByCategory() {
 
   return (
     <Box>
-      <Layout1 headerTitle={'Category Wise Quiz'}/>
+      <Layout1 headerTitle={` ${name.id}  QUIZES `} />
       <>
         <Container>
           <AddnewRowTable />

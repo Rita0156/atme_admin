@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Box,Container } from "@mui/material";
 import MUIDataTable from "mui-datatables";
 import { useNavigate } from "react-router-dom";
-import DeleteEditeTableTooltip from "../../components/updateAndDelete/index.js";
+import DeleteEditeTableTooltip from "../../components/updateAndDelete/DeleteEditeTableTooltip.js";
 import axios from "axios";
 import Layout1 from "../../components/layout/Layout.js";
 
@@ -17,6 +17,8 @@ export default function QuizList() {
     const { data } = await axios.get(
       "https://atme-quiz.onrender.com/api/contests"
     );
+
+    console.log(data, ' =============================== ')
     setQuizdata(data);
   };
 

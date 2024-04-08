@@ -2,27 +2,25 @@ import React, { useState, useEffect } from "react";
 import { Form, Button, Modal } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import "../../styles/form.css";
+import "../../../styles/form.css";
 
 const AddCategoryForm = ({ show, handleClose, title, editData }) => {
   const [noOfQuestion, setNumOfQuestion] = useState(0);
 
   const navigate = useNavigate();
   const [quizData, setQuizdata] = useState([]);
+  const [quizImage, setQuizImage] = useState();
+  const [imgurl, setImgurl] = useState("");
   const name = useParams();
 
+
   const [formData, setFormData] = useState({
-    name: editData?.name || "",
-    quizImage: editData?.quizImage || "",
-    prizeId: editData?.prizeId || "",
-    slug: editData?.slug || "",
+    category: editData?.name || "",
+    quizImage: editData?.image || "",
     entryCoins: editData?.entryCoins || "",
-    winningCoins: editData?.winningCoins || "",
-    startTime: editData?.startTime || "",
-    endTime: editData?.endTime || "",
-    questionSet: editData?.questionSet || { questionSet: [] },
-    quizId: editData?.quizId || [],
   });
+
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,29 +29,35 @@ const AddCategoryForm = ({ show, handleClose, title, editData }) => {
       [name]: value,
     });
   };
+  
+
+  // console.log(imgurl, " ggggggggggggggggggggggggggggggggggggggggggggg")
+  
+
+  console.log(formData, " to se c ddddddddddddddddddddddddd");
 
   const getData = async () => {
     const { data } = await axios.get(
       "https://atme-quiz.onrender.com/api/contests/category/CONTEST"
     );
     setQuizdata(data);
-    console.log(quizData, " =========================== ");
   };
 
   useEffect(() => {
     getData();
   }, []);
 
+  // console.log(
+  //   formData,
+  //      " ========================= "
+  //    );
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("inside submit button");
+
     if (title === "Add" && editData == null) {
-      navigate(`/question/${noOfQuestion}`, { state: formData });
-      handleClose();
-    } else {
       try {
-        const { data } = await axios.put(
-          `https://atme-quiz.onrender.com/api/contests/${editData.id}`,
+        const { data } = await axios.post(
+          `https://atme-quiz.onrender.com/api/contests/add/category`,
           formData,
           {
             headers: {
@@ -61,12 +65,12 @@ const AddCategoryForm = ({ show, handleClose, title, editData }) => {
             },
           }
         );
-        console.log(data, "update data = ");
       } catch (err) {
         console.log("error", title, err);
       }
-    }
-
+      navigate(`/`, { state: formData });
+      handleClose();
+    } 
     handleClose();
   };
 
@@ -80,13 +84,29 @@ const AddCategoryForm = ({ show, handleClose, title, editData }) => {
 
       <Modal.Body>
         <Form>
-          <Form.Group controlId="name" style={{ paddingBottom: "10px" }}>
-            <Form.Label>Name</Form.Label>
+          <Form.Group controlId="category" style={{ paddingBottom: "10px" }}>
+            <Form.Label>category</Form.Label>
             <Form.Control
               type="text"
-              name="name"
-              value={formData.name}
+              name="category"
+              value={formData.category}
               onChange={handleChange}
+            />
+          </Form.Group>
+
+          <Form.Group controlId="entryCoins" style={{ paddingBottom: "10px" }}>
+            <Form.Label>Entry Coins</Form.Label>
+            <Form.Control
+              type="number"
+              name="entryCoins"
+              value={formData.entryCoins}
+              onChange={(e) => {
+        
+                setFormData({
+                  ...formData,
+                 entryCoins:e.target.value,
+                });
+              }}
             />
           </Form.Group>
 
@@ -94,26 +114,21 @@ const AddCategoryForm = ({ show, handleClose, title, editData }) => {
             <Form.Label>Category Image</Form.Label>
             <Form.Control
               type="file"
-              id="categoryImage"
-              name="categoryImage"
+              // id="categoryImage"
+              name="quizImage"
               className="form-control-file"
               onChange={(e) => {
                 const image = e.target.files[0];
+                const reader = new FileReader();
+                reader.readAsDataURL(image);
+                reader.onload = () => {
+                  setImgurl(reader.result); // This will set imgurl to a data URL
+                };
                 setFormData({
                   ...formData,
-                  image: image,
+                  quizImage: imgurl,
                 });
               }}
-            />
-          </Form.Group>
-
-          <Form.Group controlId="slug" style={{ paddingBottom: "10px" }}>
-            <Form.Label>Slug</Form.Label>
-            <Form.Control
-              type="text"
-              name="slug"
-              value={formData.slug}
-              onChange={handleChange}
             />
           </Form.Group>
         </Form>

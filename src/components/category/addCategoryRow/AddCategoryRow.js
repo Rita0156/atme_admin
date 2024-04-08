@@ -1,14 +1,11 @@
-// Parent component (AddnewRowTable.js)
 import { useState } from "react";
-import {
-  Box,
-  Button,
-} from "@mui/material";
-import Iconify from "../iconify";
-import AddEditCategoryForm from "../editAddForm";
-export default function AddnewRowTable() {
+import { Box, Button } from "@mui/material";
+import Iconify from "../../iconify";
+import AddCategoryForm from "../addCategoryForm/AddCategoryForm";
+
+export default function AddCategoryRow() {
   const [showModal, setShowModal] = useState(false);
- 
+
   const handleOpenModal = () => {
     setShowModal(true);
   };
@@ -36,10 +33,16 @@ export default function AddnewRowTable() {
         }}
         startIcon={<Iconify icon="eva:plus-fill" />}
       >
-        Add Quiz
+        Add Category
       </Button>
-     
-     {showModal && <AddEditCategoryForm show={showModal} handleClose={handleCloseModal} title={"Add"} editData={null}/>}
+      {showModal && (
+        <AddCategoryForm
+          show={showModal}
+          handleClose={handleCloseModal}
+          title={"Add"}
+          editData={null}
+        />
+      )}
     </Box>
   );
 }

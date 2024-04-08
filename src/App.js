@@ -1,10 +1,10 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
-import CategoryList from "./screens/categoryList";
-import QuizzesByCategory from "./screens/categoryWiseQuiz";
+import CategoryList from "./screens/categoryList/CategoryList";
+import QuizzesByCategory from "./screens/categoryWiseQuiz/QuizzesByCategory";
 import SidePanel from "./components/sidebar";
-import QuizList from "./screens/quizList";
-import AddDataForm from "./components/addQuestionForm";
+import QuizList from "./screens/quizList/QuizList";
+import AddDataForm from "./components/quizes/addQuestionForm/AddDataForm";
 import  { Toaster } from 'react-hot-toast';
 
 function App() {

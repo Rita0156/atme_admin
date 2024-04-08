@@ -6,6 +6,7 @@ import * as Yup from "yup";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
+
 const AddDataForm = () => {
   const { numQuestions } = useParams();
   const questionCount = +numQuestions + 1;
@@ -15,7 +16,7 @@ const AddDataForm = () => {
   const [onAlert, setOnAlert] = useState(false);
   // console.log(onAlert, "--------------------------------")
   const validateForm = (values) => {
-    console.log(onAlert, " ============= to see  ====");
+    // console.log(onAlert, " ============= to see  ====");
     for (let i = 0; i < questionCount; i++) {
       const question = values.questions[i];
       console.log(question, " ------------------ ");
@@ -112,23 +113,23 @@ const AddDataForm = () => {
           // console.log(arrayData,'array data ================')
           state.questionSet.questionSet = arrayData;
           console.log(state, "state");
-          // try {
-          //   const { data } = await axios.post(
-          //     `https://atme-quiz.onrender.com/api/contests`,
-          //     state,
-          //     {
-          //       headers: {
-          //         "Content-Type": "application/json",
-          //       },
-          //     }
-          //   );
-          //   // console.log(data, "%%%%%%%%%%%% add data");
-          // } catch (err) {
-          //   console.log("error", err);
-          // }
-          // console.log(values);
+          try {
+            const { data } = await axios.post(
+              `https://atme-quiz.onrender.com/api/contests`,
+              state,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            );
+            // console.log(data, "%%%%%%%%%%%% add data");
+          } catch (err) {
+            console.log("error", err);
+          }
+          console.log(values);
           toast.success("Quiz Added ");
-          // navigate("/");
+          navigate("/");
           setSubmitting(false);
         }}
       >

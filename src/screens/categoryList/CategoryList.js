@@ -6,9 +6,9 @@ import MUIDataTable from "mui-datatables";
 import { useNavigate } from "react-router-dom";
 // import AddnewRowTable from "../../components/addTablerow.js";
 import axios from "axios";
-import DeleteEditeTableTooltip from "../../components/updateAndDelete/index.js";
+import DeleteEditeTableTooltip from "../../components/updateAndDelete/DeleteEditeTableTooltip.js";
 // import AddEditCategoryForm from "../../components/editAddForm/index.js";
-import AddCategoryRow from "../../components/addCategoryRow/index.js";
+import AddCategoryRow from "../../components/category/addCategoryRow/AddCategoryRow.js";
 import Layout1 from "../../components/layout/Layout.js";
 
 export default function CategoryList() {
@@ -18,8 +18,9 @@ export default function CategoryList() {
 
   const getData = async () => {
     const { data } = await axios.get(
-      "https://atme-quiz.onrender.com/api/contests/category/CONTEST"
+      "https://atme-quiz.onrender.com/api/contests/all/category"
     );
+   
     setQuizdata(data);
   };
 
@@ -29,36 +30,26 @@ export default function CategoryList() {
 
   const columns = [
     {
-      name: "id",
-      label: "id",
-      display: true,
-      options: {
-        filter: false,
-        display: quizData._id,
-
-        viewColumns: false,
-        customBodyRender: (value) => value,
-      },
-    },
-    {
       name: "quizImage",
       label: "Quizes",
       options: {
         filter: true,
         sort: true,
-        setCellProps: () => ({ style: { width: "150px", paddingLeft:"40px" , paddingRight:"200px" } }),
+        setCellProps: () => ({
+          style: { width: "100px", height:"35px", paddingLeft: "40px", paddingRight: "200px" },
+        }),
 
         customBodyRender: (value) => {
           return (
-            <Box>
-              <img alt="" src={value} />
+            <Box >
+              <img alt="" src={value} style={{width:"70px" , height:"50px"}}/>
             </Box>
           );
         },
       },
     },
     {
-      name: "name",
+      name: "category",
       label: "Category Name",
       display: true,
       options: {
@@ -91,8 +82,6 @@ export default function CategoryList() {
         },
       },
     },
-
-
   ];
 
   const handlePageChange = (action, page) => {
@@ -107,7 +96,7 @@ export default function CategoryList() {
     selectableRows: "none",
     onRowClick: (rowData) => {
       console.log(rowData, "rowdata");
-      navigate(`/contests/${rowData[2]}`);
+      navigate(`/contests/${rowData[1]}`);
     },
 
     onViewColumnsChange: (changedColumn, action) => {},
@@ -123,8 +112,8 @@ export default function CategoryList() {
   return (
     <Box>
       <>
-   <Layout1 headerTitle={'All Category'}/>
-        <Container >
+        <Layout1 headerTitle={"All Category"} />
+        <Container>
           <AddCategoryRow />
 
           <MUIDataTable
@@ -132,9 +121,7 @@ export default function CategoryList() {
             data={quizData}
             columns={columns}
             options={options}
-            
           />
-          
         </Container>
       </>
     </Box>

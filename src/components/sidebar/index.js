@@ -14,7 +14,7 @@ import CategoryIcon from "@mui/icons-material/Category";
 import QuizIcon from "@mui/icons-material/Quiz";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import Iconify from "../iconify";
-import AddQuiz from "../addQuiz";
+import AddQuiz from "../quizes/addQuiz/AddQuiz";
 import { Link } from "react-router-dom";
 const drawerWidth = 240;
 function ResponsiveDrawer(props) {

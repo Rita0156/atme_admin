@@ -1,27 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Form, Button, Modal } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import "../../styles/form.css";
+import "../../../styles/form.css";
 
 const AddEditCategoryForm = ({ show, handleClose, title, editData }) => {
   const [noOfQuestion, setNumOfQuestion] = useState(0);
   const navigate = useNavigate();
   const name = useParams();
 
-  console.log(name, "params data");
+  console.log(title, "  params data - - ");
+
+  // console.log(editData, " 00000000000 to see from add row page ")
   const [formData, setFormData] = useState({
-    name: editData?.name || name.id,
+    name: editData?.category || name.id,
     quizImage: editData?.quizImage || "",
-    prizeId: editData?.prizeId || "",
-    slug: editData?.slug || name.id.toLowerCase(),
     entryCoins: editData?.entryCoins || "",
-    winningCoins: editData?.winningCoins || "",
-    startTime: editData?.startTime || "",
-    endTime: editData?.endTime || "",
     questionSet: editData?.questionSet || { questionSet: [] },
-    quizId: editData?.quizId || "",
-    id: editData?.id || "",
+
   });
 
   const handleChange = (e) => {
@@ -32,18 +28,23 @@ const AddEditCategoryForm = ({ show, handleClose, title, editData }) => {
     });
   };
 
+  console.log(
+    formData,
+    " jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj "
+  );
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("inside submit button");
+
     if (title === "Add" && editData == null) {
-
       navigate(`/question/${noOfQuestion}`, { state: formData });
-
       handleClose();
     } else {
       try {
-        const { data } = await axios.put(
-          `https://atme-quiz.onrender.com/api/contests/${editData.id}`,
+      
+        
+        const { data } = await axios.patch(
+          `https://atme-quiz.onrender.com/api/contests/${editData?.category}`,
           formData,
           {
             headers: {
@@ -51,7 +52,6 @@ const AddEditCategoryForm = ({ show, handleClose, title, editData }) => {
             },
           }
         );
-        console.log(data, "update data");
       } catch (err) {
         console.log("error", title, err);
       }
@@ -78,16 +78,6 @@ const AddEditCategoryForm = ({ show, handleClose, title, editData }) => {
             />
           </Form.Group>
 
-          <Form.Group controlId="slug "  style={{ paddingBottom: "10px" }}>
-            <Form.Label>Slug</Form.Label>
-            <Form.Control
-              type="text"
-              name="slug"
-              value={formData.slug}
-              onChange={handleChange}
-            />
-          </Form.Group>
-
           <Form.Group controlId="entryCoins" style={{ paddingBottom: "10px" }}>
             <Form.Label>Entry Coins</Form.Label>
             <Form.Control
@@ -97,29 +87,7 @@ const AddEditCategoryForm = ({ show, handleClose, title, editData }) => {
               onChange={handleChange}
             />
           </Form.Group>
-
-          <Form.Group
-            controlId="winningCoins"
-            style={{ paddingBottom: "10px" }}
-          >
-            <Form.Label>Winning Coins</Form.Label>
-            <Form.Control
-              type="number"
-              name="winningCoins"
-              value={formData.winningCoins}
-              onChange={handleChange}
-            />
-          </Form.Group>
-          {title === "Add" && (
-            <Form.Group style={{ paddingBottom: "10px" }}>
-              <Form.Label>How many questions do you want to add?</Form.Label>
-              <Form.Control
-                type="number"
-                value={noOfQuestion}
-                onChange={(e) => setNumOfQuestion(e.target.value)}
-              />
-            </Form.Group>
-          )}
+         
         </Form>
 
         <Button
