@@ -15,13 +15,10 @@ const AddDataForm = () => {
   const [onAlert, setOnAlert] = useState(false);
   // console.log(onAlert, "--------------------------------")
   const validateForm = (values) => {
-
-   
-
-    console.log(onAlert, " ============= to see  ====")
+    console.log(onAlert, " ============= to see  ====");
     for (let i = 0; i < questionCount; i++) {
       const question = values.questions[i];
-      console.log(question, " ------------------ ")
+      console.log(question, " ------------------ ");
 
       if (!question.question.trim() && onAlert) {
         scrollToRefs.current[i].scrollIntoView({ behavior: "smooth" });
@@ -40,7 +37,7 @@ const AddDataForm = () => {
           break;
         }
       }
-      if(!correctAnswerSelected){
+      if (!correctAnswerSelected) {
         scrollToRefs.current[i].scrollIntoView({ behavior: "smooth" });
         return false;
       }
@@ -80,7 +77,7 @@ const AddDataForm = () => {
         onSubmit={async (values, { setSubmitting }) => {
           setOnAlert(true);
           // setOnAlert(false);
-        
+
           // console.log(values.questions.length, "**************");
           const arrayData = [];
           values.questions?.map((ele) => {
@@ -220,9 +217,19 @@ const AddDataForm = () => {
                                 value: updatedAnswers,
                               },
                             });
-                          }} 
-                          />
-                          {answer.selected && <span style={{ color :  "green" , marginLeft: "5px" , marginRight:"5px"}}>Correct Answer </span>}
+                          }}
+                        />
+                        {answer.selected && (
+                          <span
+                            style={{
+                              color: "green",
+                              marginLeft: "5px",
+                              marginRight: "5px",
+                            }}
+                          >
+                            Correct Answer{" "}
+                          </span>
+                        )}
                       </Form.Group>
                     ))}
                   </div>
