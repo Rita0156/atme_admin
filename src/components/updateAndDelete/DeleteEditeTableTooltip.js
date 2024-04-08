@@ -24,6 +24,7 @@ export default function DeleteEditeTableTooltip({
         setProductDetailsdata(productDetails[i]);
       }
     }
+    console.log(productDetailsdata, " hhhhhhhhhhhhhhhhhhhhhhhhhh")
     setShowEditForm(true);
   };
 
@@ -31,7 +32,7 @@ export default function DeleteEditeTableTooltip({
     setShowEditForm(false);
   };
 
-  console.log(fromCategory, " sssssssssssssssss")
+  // console.log(fromCategory, " sssssssssssssssss")
   const handleDeleteUser = async (id) => {
     try {
       const { data } = await axios.delete(
@@ -41,6 +42,8 @@ export default function DeleteEditeTableTooltip({
       console.log(err, "%%%%%%%%%%%% delete data");
     }
   };
+
+  console.log(productDetailsdata, 'sssssssssssss')
 
   return (
     <Box
@@ -69,7 +72,8 @@ export default function DeleteEditeTableTooltip({
               title="Edit"
               editData={productDetailsdata}
             />
-            :  <AddQuiz
+            :  
+            <AddQuiz
             show={showModalEdit}
             handleClose={handleEditClose}
             title="Edit"

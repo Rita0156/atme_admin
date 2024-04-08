@@ -15,7 +15,6 @@ const AddEditCategoryForm = ({ show, handleClose, title, editData }) => {
     name: editData?.category || '',
     quizImage: editData?.quizImage || "",
     entryCoins: editData?.entryCoins || "",
-    
     Time: 60,
   });
 

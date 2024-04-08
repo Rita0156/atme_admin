@@ -9,7 +9,6 @@ const AddQuiz = ({ show, handleClose, title, editData, fromSidebar }) => {
   const [noOfQuestion, setNumOfQuestion] = useState(0);
   const navigate = useNavigate();
   const [quizData, setQuizdata] = useState([]);
-
   const name = useParams();
 
   const getData = async () => {
@@ -41,6 +40,7 @@ const AddQuiz = ({ show, handleClose, title, editData, fromSidebar }) => {
     });
   };
 
+  // console.log(editData, ' --------------------- ')
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (title === "Add" && editData == null) {
@@ -68,7 +68,7 @@ const AddQuiz = ({ show, handleClose, title, editData, fromSidebar }) => {
   return (
     <Modal show={show} onHide={handleClose} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Add Quiz</Modal.Title>
+      <Modal.Title>{title ? title + " Form" : "Edit Form"}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
