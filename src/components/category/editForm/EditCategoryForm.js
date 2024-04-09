@@ -79,7 +79,7 @@ const AddEditCategoryForm = ({ show, handleClose, title, editData }) => {
             <Form.Control
               type="number"
               name="entryCoins"
-              value={formData.entryCoins}
+              value={formData?.entryCoins}
               onChange={handleChange}
             />
           </Form.Group>

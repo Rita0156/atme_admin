@@ -14,18 +14,17 @@ const AddDataForm = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
   const [onAlert, setOnAlert] = useState(false);
-  // console.log(onAlert, "--------------------------------")
+
+  console.log(state, " = s")
   const validateForm = (values) => {
-    // console.log(onAlert, " ============= to see  ====");
     for (let i = 0; i < questionCount; i++) {
       const question = values.questions[i];
-      // console.log(question, " ------------------ ");
 
       if (!question.question.trim() && onAlert) {
         scrollToRefs.current[i].scrollIntoView({ behavior: "smooth" });
         return false;
       }
-      let correctAnswerCount = 0;
+
       let correctAnswerSelected = false;
       for (let j = 0; j < 4; j++) {
         const answer = question.answers[j];
@@ -48,16 +47,25 @@ const AddDataForm = () => {
   return (
     <Container style={{ paddingRight: "24px" }}>
       <Formik
-        initialValues={{
-          questions: Array.from({ length: questionCount }, () => ({
-            question: "",
-            answers: Array.from({ length: 4 }, () => ({
-              answer: "",
-              correct: false,
-              selected: false, // Track if the answer is selected
+       initialValues={{
+        questions: state.questionSet
+          ? state.questionSet.map(question => ({
+              question: question.question,
+              answers: question.answerOptions.map(answerOption => ({
+                answer: answerOption.answer,
+                correct: answerOption.isCorrectAnswer,
+                selected: false,
+              })),
+            }))
+          : Array.from({ length: questionCount }, () => ({
+              question: "",
+              answers: Array.from({ length: 4 }, () => ({
+                answer: "",
+                correct: false,
+                selected: false,
+              })),
             })),
-          })),
-        }}
+      }}
         validationSchema={Yup.object().shape({
           questions: Yup.array().of(
             Yup.object().shape({
@@ -77,9 +85,6 @@ const AddDataForm = () => {
         }}
         onSubmit={async (values, { setSubmitting }) => {
           setOnAlert(true);
-          // setOnAlert(false);
-
-          // console.log(values.questions.length, "**************");
           const arrayData = [];
           values.questions?.map((ele) => {
             console.log("inside map function");
@@ -110,7 +115,6 @@ const AddDataForm = () => {
             };
             arrayData.push(obj);
           });
-          // console.log(arrayData,'array data ================')
           state.questionSet.questionSet = arrayData;
           console.log(state, "state");
           try {
@@ -127,7 +131,7 @@ const AddDataForm = () => {
           } catch (err) {
             console.log("error", err);
           }
-          console.log(values);
+
           toast.success("Quiz Added ");
           navigate("/");
           setSubmitting(false);

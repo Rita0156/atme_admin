@@ -84,7 +84,7 @@ function ResponsiveDrawer(props) {
           {drawer}
         </Drawer>
       </Box>
-      { modalOpen && <AddQuiz show={modalOpen} handleClose={handleCloseModal} fromSidebar={fromSidebar} />}
+      { modalOpen && <AddQuiz show={modalOpen} handleClose={handleCloseModal} fromSidebar={fromSidebar} title={"Add"}/>}
     </Box>
   );
 } 

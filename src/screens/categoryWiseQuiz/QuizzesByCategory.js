@@ -28,7 +28,7 @@ export default function QuizzesByCategory() {
     setQuizdata(data.quizzes);
   };
 
-  console.log(name);
+  // console.log(name);
   useEffect(() => {
     getData();
   }, []);
@@ -136,13 +136,13 @@ export default function QuizzesByCategory() {
 
   return (
     <Box>
-      <Layout1 headerTitle={` ${name.id}  QUIZES `} />
+      <Layout1 headerTitle={` ${name.id}  Quizes `} />
       <>
         <Container>
           <AddnewRowTable />
 
           <MUIDataTable
-            title={"Category Wise Quiz Table"}
+            title={` ${name.id}  Quizes `}
             data={quizData}
             columns={columns}
             options={options}
