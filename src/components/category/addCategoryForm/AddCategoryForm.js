@@ -29,12 +29,8 @@ const AddCategoryForm = ({ show, handleClose, title, editData }) => {
       [name]: value,
     });
   };
-  
-
-  // console.log(imgurl, " ggggggggggggggggggggggggggggggggggggggggggggg")
-  
-
-  // console.log(formData, " to se c ddddddddddddddddddddddddd");
+  console.log(formData, "yyyyyyyyyyyyyyyyyyyyyy")
+  console.log(imgurl, " ggggggggggggggggggggggggggggggggggggggggggggg")
 
   const getData = async () => {
     const { data } = await axios.get(
@@ -47,10 +43,6 @@ const AddCategoryForm = ({ show, handleClose, title, editData }) => {
     getData();
   }, []);
 
-  // console.log(
-  //   formData,
-  //      " ========================= "
-  //    );
   const handleSubmit = async (e) => {
     e.preventDefault();
 

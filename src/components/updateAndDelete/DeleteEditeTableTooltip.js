@@ -1,11 +1,11 @@
 import { useState } from "react";
-
 import { Box, Tooltip, IconButton } from "@mui/material";
 // import {useDispatch} from 'react-redux'
 import Iconify from "../iconify";
 import AddEditCategoryForm from "../category/editForm/EditCategoryForm";
 import axios from "axios";
 import AddQuiz from "../quizes/addQuiz/AddQuiz";
+import toast from "react-hot-toast";
 
 export default function DeleteEditeTableTooltip({
   productDetails,
@@ -13,52 +13,55 @@ export default function DeleteEditeTableTooltip({
   fromCategory,
   compoData,
 }) {
-
-
   const [showModalEdit, setShowEditForm] = useState(false);
   const [productDetailsdata, setProductDetailsdata] = useState({});
 
-  // console.log(productDetails, " kkkkkkkkkkkkkk")
-// console.log(tableMeta?.rowData[0], "9999999999999999" )
+  // console.log(productDetails, " jjjjjjjjjjjjjjj");
   const handleEditClick = (id) => {
-    if(fromCategory)
-    {
+    if (fromCategory) {
       for (let i = 0; i < productDetails?.length; i++) {
-        if (productDetails[i]?.id === id ) {
+        if (productDetails[i]?.id === id) {
           setProductDetailsdata(productDetails[i]);
         }
       }
-    }
-    else
-    {
+    } else {
+      for (let i = 0; i < productDetails?.length; i++) {
+        if (productDetails[i]?.category === id) {
+          setProductDetailsdata(productDetails[i]);
+        }
+      }
 
-      for (let i = 0; i < productDetails?.length; i++) {
-        if (productDetails[i]?.category === id ) {
-          setProductDetailsdata(productDetails[i]);
-        }
-      }
+      // console.log(productDetailsdata, " dfffffffffffffffffffffffffffff ");
     }
     setShowEditForm(true);
   };
-  // console.log(productDetailsdata, " hhhhhhhhhhhhhhhhhhhhhhhhhh")
-
   const handleEditClose = () => {
     setShowEditForm(false);
   };
-
-  // console.log(fromCategory, " sssssssssssssssss")
   const handleDeleteUser = async (id) => {
-    try {
-      const { data } = await axios.delete(
-        `https://atme-quiz.onrender.com/api/contests/${id}`
-      );
-    } catch (err) {
-      console.log(err, "%%%%%%%%%%%% delete data");
+    if (fromCategory) {
+      try {
+        const { data } = await axios.delete(
+          `https://atme-quiz.onrender.com/api/contests/${id}`
+        );
+      } catch (err) {
+        console.log(err, " delete data");
+      }
+    } else {
+      for (let i = 0; i < productDetails?.length; i++) {
+        if (productDetails[i]?.category === id) {
+          setProductDetailsdata(productDetails[i]);
+          // console.log(productDetailsdata?.quizzes?.length, " dfffffffffffffffffffffffffffff ")
+
+          if (productDetailsdata?.quizzes?.length === 0) {
+            toast("Category deleted ");
+          } else {
+            toast("Category cannot be deleted ");
+          }
+        }
+      }
     }
   };
-
-  // console.log(productDetailsdata, 'sssssssssssss')
-
   return (
     <Box
       sx={{
@@ -71,45 +74,53 @@ export default function DeleteEditeTableTooltip({
         <IconButton
           onClick={(e) => {
             e.stopPropagation();
-            {fromCategory ? handleEditClick(tableMeta?.rowData[0]) : handleEditClick(tableMeta?.rowData[1]);}
-            // handleEditClick(tableMeta?.rowData[1]);
+            {
+              fromCategory
+                ? handleEditClick(tableMeta?.rowData[0])
+                : handleEditClick(tableMeta?.rowData[1]);
+            }
           }}
           sx={{ marginRight: "12px" }}
         >
           <Iconify icon={"eva:edit-fill"} />
         </IconButton>
-
         <div>
-          {showModalEdit && !fromCategory ?
+          {showModalEdit && !fromCategory ? (
             <AddEditCategoryForm
               show={showModalEdit}
               handleClose={handleEditClose}
               title="Edit"
               editData={productDetailsdata}
             />
-            :  
+          ) : (
             <AddQuiz
-            show={showModalEdit}
-            handleClose={handleEditClose}
-            title="Edit"
-            editData={productDetailsdata}
-          />
-          }
+              show={showModalEdit}
+              handleClose={handleEditClose}
+              title="Edit"
+              editData={productDetailsdata}
+            />
+          )}
         </div>
       </Tooltip>
-      {fromCategory &&    
+      {/* {fromCategory &&      */}
       <Tooltip title="Delete">
         <IconButton
           onClick={(e) => {
             e.stopPropagation();
-            handleDeleteUser(tableMeta.rowData[1]);
+            {
+              fromCategory
+                ? handleDeleteUser(tableMeta.rowData[0])
+                : handleDeleteUser(tableMeta.rowData[1]);
+            }
+
+            // handleDeleteUser(tableMeta.rowData[1]);
           }}
           sx={{ color: "error.main" }}
         >
           <Iconify icon={"eva:trash-2-outline"} />
         </IconButton>
       </Tooltip>
-      }
+      {/* } */}
     </Box>
   );
 }

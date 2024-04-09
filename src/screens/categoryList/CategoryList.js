@@ -23,6 +23,8 @@ export default function CategoryList() {
     );
    
     setQuizdata(data);
+    localStorage.setItem("quizData", JSON.stringify(data));
+    
   };
 
   useEffect(() => {
@@ -120,10 +122,12 @@ export default function CategoryList() {
 
           <MUIDataTable
             title={"Category Table"}
+            style={{marginLeft:"-49px"}}
             data={quizData}
             columns={columns}
             options={options}
           />
+
         </Container>
       </>
     </Box>

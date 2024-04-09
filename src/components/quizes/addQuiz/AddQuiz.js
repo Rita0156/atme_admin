@@ -15,20 +15,19 @@ const AddQuizSchema = Yup.object().shape({
 const AddQuiz = ({ show, handleClose, title, editData, fromSidebar }) => {
   const [quizData, setQuizdata] = useState([]);
   const name = useParams();
+  const [edit, setEdit] = useState();
   const navigate = useNavigate();
 
-  const getData = async () => {
-    const { data } = await axios.get(
-      "https://atme-quiz.onrender.com/api/contests/all/category"
-    );
-    setQuizdata(data);
-  };
-
   useEffect(() => {
-    getData();
+    const quizDataString = localStorage.getItem("quizData");
 
+    if (quizDataString) {
+      const qData = JSON.parse(quizDataString);
+      setQuizdata(qData);
+    } else {
+      console.log("No quiz data found in localStorage");
+    }
   }, []);
-
 
   return (
     <Modal show={show} onHide={handleClose} centered>
@@ -42,44 +41,33 @@ const AddQuiz = ({ show, handleClose, title, editData, fromSidebar }) => {
             name: editData?.name || "",
             categoryName: name?.id || "",
             entryCoins: editData?.entryCoins || "",
-          
+            questionSet: editData?.questionSet || "",
+            editQuestionSet: edit,
           }}
-         
-          validationSchema={title === "Add" ? AddQuizSchema : ""} 
-          onSubmit={(values, { setSubmitting }) => {
-          
-          
+          validationSchema={title === "Add" ? AddQuizSchema : ""}
+          onSubmit={async (values, { setSubmitting }) => {
             if (title === "Add") {
-
-              console.log(" ddddddddddddddddddddddd  ");
-
               navigate(`/question/${values.noOfQuestion}`, {
                 state: values,
               });
-
             } else {
-
-              console.log(
-                " gggggggggggggggggggggggggggggggggggggggggggggggggggggg"
-              );
-
-              navigate(`/question/${editData?.questionSet?.length}`, {
-                state: editData,
-              });
+              if (values.editQuestionSet) {
+                navigate(`/question/${editData?.questionSet?.length}`, {
+                  state: values,
+                });
+              } else {
+                try {
+                  await axios.put(
+                    `https://atme-quiz.onrender.com/api/contests/${editData.id}`,
+                    values
+                  );
+                } catch (err) {
+                  console.log(err, "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+                }
+              }
 
               handleClose();
               setSubmitting(false);
-              // axios
-              //   .put(
-              //     `https://atme-quiz.onrender.com/api/contests${editData.id}`,
-              //     values
-              //   )
-              //   .then((response) => {
-              //     console.log(response.data, "update data");
-              //   })
-              //   .catch((error) => {
-              //     console.error("error", title, error);
-              //   });
             }
             handleClose();
             setSubmitting(false);
@@ -123,7 +111,7 @@ const AddQuiz = ({ show, handleClose, title, editData, fromSidebar }) => {
                       <Field
                         type="text"
                         placeholder="Enter new category name"
-                        value={values.otherCategoryName}
+                        value={values?.otherCategoryName}
                         onChange={handleChange}
                         name="otherCategoryName"
                         style={{ marginTop: "10px" }}
@@ -175,7 +163,16 @@ const AddQuiz = ({ show, handleClose, title, editData, fromSidebar }) => {
               ) : (
                 <Form.Group style={{ paddingBottom: "10px" }}>
                   <Form.Label>Do you want to edit the question set?</Form.Label>
-                  <Field type="number" name="noOfQuestion" as={Form.Control} />
+                  <Form.Check
+                    inline
+                    type="checkbox"
+                    className="ms-2"
+                    name="editQuestionSet"
+                    id="editQuestionSetYes"
+                    value={edit ? true : false}
+                    checked={edit}
+                    onChange={handleChange}
+                  />
                 </Form.Group>
               )}
 

@@ -18,21 +18,21 @@ const AddDataForm = () => {
   console.log(state, " = s")
   const validateForm = (values) => {
     for (let i = 0; i < questionCount; i++) {
-      const question = values.questions[i];
+      const question = values?.questions[i];
 
-      if (!question.question.trim() && onAlert) {
+      if (!question?.question.trim() && onAlert) {
         scrollToRefs.current[i].scrollIntoView({ behavior: "smooth" });
         return false;
       }
 
       let correctAnswerSelected = false;
       for (let j = 0; j < 4; j++) {
-        const answer = question.answers[j];
+        const answer = question?.answers[j];
         if (!answer.answer.trim()) {
           scrollToRefs.current[i].scrollIntoView({ behavior: "smooth" });
           return false;
         }
-        if (answer.selected) {
+        if (answer?.selected) {
           correctAnswerSelected = true;
           break;
         }
@@ -50,11 +50,11 @@ const AddDataForm = () => {
        initialValues={{
         questions: state.questionSet
           ? state.questionSet.map(question => ({
-              question: question.question,
-              answers: question.answerOptions.map(answerOption => ({
-                answer: answerOption.answer,
-                correct: answerOption.isCorrectAnswer,
-                selected: false,
+              question: question?.question,
+              answers: question?.answerOptions.map(answerOption => ({
+                answer: answerOption?.answer,
+                correct: answerOption?.isCorrectAnswer,
+                selected: answerOption?.isCorrectAnswer,
               })),
             }))
           : Array.from({ length: questionCount }, () => ({
@@ -86,8 +86,10 @@ const AddDataForm = () => {
         onSubmit={async (values, { setSubmitting }) => {
           setOnAlert(true);
           const arrayData = [];
+
+          // console.log(values.editQuestionSet, " 5555555555555555555555555555555555")
           values.questions?.map((ele) => {
-            console.log("inside map function");
+           
             const obj = {
               question: ele.question,
               answerOptions: [
@@ -115,25 +117,45 @@ const AddDataForm = () => {
             };
             arrayData.push(obj);
           });
-          state.questionSet.questionSet = arrayData;
-          console.log(state, "state");
-          try {
-            const { data } = await axios.post(
-              `https://atme-quiz.onrender.com/api/contests`,
-              state,
-              {
-                headers: {
-                  "Content-Type": "application/json",
-                },
-              }
-            );
-            // console.log(data, "%%%%%%%%%%%% add data");
-          } catch (err) {
-            console.log("error", err);
-          }
 
-          toast.success("Quiz Added ");
-          navigate("/");
+          state.questionSet.questionSet = arrayData;
+
+          if(!state.editQuestionSet)
+          {
+
+            try {
+              const { data } = await axios.post(
+                `https://atme-quiz.onrender.com/api/contests`,
+                state,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                }
+              );
+            } catch (err) {
+              console.log("error", err);
+            }
+            toast.success("Quiz Added");
+            navigate("/");
+          }
+          else {
+            try {
+              const { data } = await axios.post(
+                `https://atme-quiz.onrender.com/api/contests`,
+                state,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                }
+              );
+            } catch (err) {
+              console.log("error", err);
+            }
+            toast.success("Quiz Edited");
+            navigate("/");
+          }
           setSubmitting(false);
         }}
       >
@@ -177,7 +199,7 @@ const AddDataForm = () => {
                       gridTemplateColumns: "repeat(2,1fr)",
                     }}
                   >
-                    {question.answers.map((answer, answerIndex) => (
+                    {question?.answers?.map((answer, answerIndex) => (
                       <Form.Group
                         controlId={`questions.${questionIndex}.answers.${answerIndex}.answer`}
                         key={answerIndex}
@@ -238,7 +260,7 @@ const AddDataForm = () => {
                       </Form.Group>
                     ))}
                   </div>
-                  {!question.answers.some((answer) => answer.selected) &&
+                  {!question?.answers?.some((answer) => answer?.selected) &&
                     onAlert && (
                       <Alert variant="danger">
                         Please select the correct answer for Question{" "}
