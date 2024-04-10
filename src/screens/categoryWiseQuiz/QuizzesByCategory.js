@@ -19,17 +19,19 @@ export default function QuizzesByCategory() {
 
   const [image, setImage] = useState();
 
-  const getData = async () => {
-    const { data } = await axios.get(
-      "https://atme-quiz.onrender.com/api/contests/category/" + `${name.id}`
-    );
-
-    setImage(data.quizImage);
-    setQuizdata(data.quizzes);
-  };
-
-  // console.log(name);
   useEffect(() => {
+    const getData = async () => {
+      try {
+        const { data } = await axios.get(
+          `https://atme-quiz.onrender.com/api/contests/category/${name.id}`
+        );
+        setImage(data.quizImage);
+        setQuizdata(data.quizzes);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
     getData();
   }, []);
 

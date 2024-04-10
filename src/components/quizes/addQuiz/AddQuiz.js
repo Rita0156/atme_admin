@@ -8,14 +8,14 @@ import "../../../styles/form.css";
 
 const AddQuizSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
-  categoryName: Yup.string().required("Category Name is required"),
+  category: Yup.string().required("Category Name is required"),
   entryCoins: Yup.number().required("Entry Coins is required"),
 });
 
 const AddQuiz = ({ show, handleClose, title, editData, fromSidebar }) => {
   const [quizData, setQuizdata] = useState([]);
   const name = useParams();
-  const [edit, setEdit] = useState();
+  const [edit, setEdit] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,6 +29,7 @@ const AddQuiz = ({ show, handleClose, title, editData, fromSidebar }) => {
     }
   }, []);
 
+  // console.log(edit, " d");
   return (
     <Modal show={show} onHide={handleClose} centered>
       <Modal.Header closeButton>
@@ -39,26 +40,28 @@ const AddQuiz = ({ show, handleClose, title, editData, fromSidebar }) => {
         <Formik
           initialValues={{
             name: editData?.name || "",
-            categoryName: name?.id || "",
+            category: name?.id || "",
             entryCoins: editData?.entryCoins || "",
             questionSet: editData?.questionSet || "",
             editQuestionSet: edit,
+            id: editData?.id || "",
           }}
           validationSchema={title === "Add" ? AddQuizSchema : ""}
           onSubmit={async (values, { setSubmitting }) => {
+            // console.log(values, /" w ");
             if (title === "Add") {
               navigate(`/question/${values.noOfQuestion}`, {
                 state: values,
               });
             } else {
-              if (values.editQuestionSet) {
+              if (edit) {
                 navigate(`/question/${editData?.questionSet?.length}`, {
                   state: values,
                 });
               } else {
                 try {
                   await axios.put(
-                    `https://atme-quiz.onrender.com/api/contests/${editData.id}`,
+                    `https://atme-quiz.onrender.com/api/contests/${editData?.id}`,
                     values
                   );
                 } catch (err) {
@@ -86,7 +89,7 @@ const AddQuiz = ({ show, handleClose, title, editData, fromSidebar }) => {
               </Form.Group>
 
               <Form.Group
-                controlId="categoryName"
+                controlId="category"
                 style={{ paddingBottom: "10px" }}
               >
                 <Form.Label>Category Name</Form.Label>
@@ -94,7 +97,7 @@ const AddQuiz = ({ show, handleClose, title, editData, fromSidebar }) => {
                   <>
                     <Field
                       as="select"
-                      name="categoryName"
+                      name="category"
                       onChange={handleChange}
                       className="form-control"
                     >
@@ -107,7 +110,7 @@ const AddQuiz = ({ show, handleClose, title, editData, fromSidebar }) => {
                       <option value="Other">Other</option>
                     </Field>
 
-                    {values.categoryName === "Other" && (
+                    {values.category === "Other" && (
                       <Field
                         type="text"
                         placeholder="Enter new category name"
@@ -122,14 +125,14 @@ const AddQuiz = ({ show, handleClose, title, editData, fromSidebar }) => {
                 ) : (
                   <Field
                     type="text"
-                    name="categoryName"
+                    name="category"
                     as={Form.Control}
                     onChange={handleChange}
                     className="form-control"
                   />
                 )}
                 <ErrorMessage
-                  name="categoryName"
+                  name="category"
                   component="div"
                   className="text-danger"
                 />
@@ -166,12 +169,9 @@ const AddQuiz = ({ show, handleClose, title, editData, fromSidebar }) => {
                   <Form.Check
                     inline
                     type="checkbox"
-                    className="ms-2"
-                    name="editQuestionSet"
-                    id="editQuestionSetYes"
-                    value={edit ? true : false}
+                    id="editQuestionSet"
                     checked={edit}
-                    onChange={handleChange}
+                    onChange={(e) => setEdit(e.target.checked)}
                   />
                 </Form.Group>
               )}

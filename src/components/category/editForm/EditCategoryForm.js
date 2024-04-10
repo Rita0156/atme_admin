@@ -9,16 +9,14 @@ const AddEditCategoryForm = ({ show, handleClose, title, editData }) => {
   const navigate = useNavigate();
   const name = useParams();
 
-  console.log(name, "  params data - ooo - ");
+
 
   const [formData, setFormData] = useState({
-    name: editData?.category || '',
+    category: editData?.category || "",
     quizImage: editData?.quizImage || "",
     entryCoins: editData?.entryCoins || "",
-    Time: 60,
   });
 
-  // console.log(title, " ffffffffffffffffffffffffffffffffffffff")
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -27,7 +25,6 @@ const AddEditCategoryForm = ({ show, handleClose, title, editData }) => {
     });
   };
 
-  // console.log(editData?.category," ddddddddddddddddddddddddddddd")
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,8 +34,8 @@ const AddEditCategoryForm = ({ show, handleClose, title, editData }) => {
       handleClose();
     } else {
       try {
-      
-        
+        // { category, time:60,    entryCoins,    quizImage }
+        // console.log(formData, "ddd")
         const { data } = await axios.patch(
           `https://atme-quiz.onrender.com/api/contests/${editData?.category}`,
           formData,
@@ -64,12 +61,12 @@ const AddEditCategoryForm = ({ show, handleClose, title, editData }) => {
 
       <Modal.Body>
         <Form>
-          <Form.Group controlId="name" style={{ paddingBottom: "10px" }}>
+          <Form.Group controlId="category" style={{ paddingBottom: "10px" }}>
             <Form.Label>Name</Form.Label>
             <Form.Control
               type="text"
-              name="name"
-              value={formData.name}
+              name="category"
+              value={formData.category}
               onChange={handleChange}
             />
           </Form.Group>

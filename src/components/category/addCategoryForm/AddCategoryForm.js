@@ -29,8 +29,6 @@ const AddCategoryForm = ({ show, handleClose, title, editData }) => {
       [name]: value,
     });
   };
-  console.log(formData, "yyyyyyyyyyyyyyyyyyyyyy")
-  console.log(imgurl, " ggggggggggggggggggggggggggggggggggggggggggggg")
 
   const getData = async () => {
     const { data } = await axios.get(

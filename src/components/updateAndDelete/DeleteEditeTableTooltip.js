@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { Box, Tooltip, IconButton } from "@mui/material";
+import { Box, Tooltip, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Button  } from "@mui/material";
 // import {useDispatch} from 'react-redux'
 import Iconify from "../iconify";
 import AddEditCategoryForm from "../category/editForm/EditCategoryForm";
 import axios from "axios";
 import AddQuiz from "../quizes/addQuiz/AddQuiz";
 import toast from "react-hot-toast";
+import { removeFromQuiz } from "../../slices/QuizSlice";
+import { useDispatch } from "react-redux";
 
 export default function DeleteEditeTableTooltip({
   productDetails,
@@ -15,6 +17,8 @@ export default function DeleteEditeTableTooltip({
 }) {
   const [showModalEdit, setShowEditForm] = useState(false);
   const [productDetailsdata, setProductDetailsdata] = useState({});
+  const [openConfirmation, setOpenConfirmation] = useState(false);
+  const dispatch = useDispatch();
 
   // console.log(productDetails, " jjjjjjjjjjjjjjj");
   const handleEditClick = (id) => {
@@ -31,37 +35,58 @@ export default function DeleteEditeTableTooltip({
         }
       }
 
-      // console.log(productDetailsdata, " dfffffffffffffffffffffffffffff ");
     }
     setShowEditForm(true);
   };
+  
   const handleEditClose = () => {
     setShowEditForm(false);
   };
+
   const handleDeleteUser = async (id) => {
     if (fromCategory) {
-      try {
-        const { data } = await axios.delete(
-          `https://atme-quiz.onrender.com/api/contests/${id}`
-        );
-      } catch (err) {
-        console.log(err, " delete data");
-      }
+      setOpenConfirmation(true); // Show confirmation dialog before deletion
     } else {
-      for (let i = 0; i < productDetails?.length; i++) {
-        if (productDetails[i]?.category === id) {
-          setProductDetailsdata(productDetails[i]);
-          // console.log(productDetailsdata?.quizzes?.length, " dfffffffffffffffffffffffffffff ")
-
-          if (productDetailsdata?.quizzes?.length === 0) {
-            toast("Category deleted ");
-          } else {
-            toast("Category cannot be deleted ");
-          }
-        }
-      }
+      // Your existing code for deleting category
+      // ...
     }
   };
+
+  const handleConfirmDelete = async () => {
+    try {
+      const { data } = await axios.delete(
+        `https://atme-quiz.onrender.com/api/contests/${tableMeta.rowData[0]}`
+      );
+      dispatch(removeFromQuiz(tableMeta.rowData[0]));
+      toast.success("Entity deleted");
+    } catch (err) {
+      console.log(err, "delete data");
+    }
+    setOpenConfirmation(false); // Close confirmation dialog after deletion
+  };
+
+  // const handleDeleteUser = async (id) => {
+
+  //   if (fromCategory) {
+      
+  //     try {
+  //       const { data } = await axios.delete(
+  //         `https://atme-quiz.onrender.com/api/contests/${id}`
+  //       );
+  //     } catch (err) {
+  //       console.log(err, " delete data");
+  //     }
+  //   } else {
+  //     const categoryToDelete = productDetails.find((item) => item.category === id);
+  //     if (categoryToDelete && categoryToDelete.quizzes.length === 0) {
+  //       toast.success("Category deleted");
+  //     } else {
+  //       toast.error("Category cannot be deleted");
+  //     }
+        
+      
+  //   }
+  // };
   return (
     <Box
       sx={{
@@ -120,6 +145,18 @@ export default function DeleteEditeTableTooltip({
           <Iconify icon={"eva:trash-2-outline"} />
         </IconButton>
       </Tooltip>
+
+      <Dialog open={openConfirmation} onClose={() => setOpenConfirmation(false)}>
+        <DialogTitle>Confirmation</DialogTitle>
+        <DialogContent>
+          Are you sure you want to delete the entity?
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenConfirmation(false)}>Cancel</Button>
+          <Button onClick={handleConfirmDelete} variant="contained" color="error">Delete</Button>
+        </DialogActions>
+      </Dialog>
+
       {/* } */}
     </Box>
   );

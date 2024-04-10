@@ -17,6 +17,8 @@ export default function CategoryList() {
   const [fromCategory, setFromCategory] = useState(false);
   const navigate = useNavigate();
 
+
+
   const getData = async () => {
     const { data } = await axios.get(
       "https://atme-quiz.onrender.com/api/contests/all/category"
@@ -24,6 +26,7 @@ export default function CategoryList() {
    
     setQuizdata(data);
     localStorage.setItem("quizData", JSON.stringify(data));
+    
     
   };
 
@@ -99,7 +102,7 @@ export default function CategoryList() {
     responsive: "standard",
     selectableRows: "none",
     onRowClick: (rowData) => {
-      console.log(rowData, "rowdata");
+   
       navigate(`/contests/${rowData[1]}`);
     },
 

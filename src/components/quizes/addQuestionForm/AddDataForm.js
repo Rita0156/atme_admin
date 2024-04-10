@@ -14,8 +14,12 @@ const AddDataForm = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
   const [onAlert, setOnAlert] = useState(false);
+  const [edit, setEdit] = useState(state.questionSet ? true : false);
+  const [category , setCategory ] = useState(state.categoryName)
+  
+  // console.log(state, " sss")
+ 
 
-  console.log(state, " = s")
   const validateForm = (values) => {
     for (let i = 0; i < questionCount; i++) {
       const question = values?.questions[i];
@@ -44,28 +48,30 @@ const AddDataForm = () => {
     }
     return true;
   };
+
+ 
   return (
     <Container style={{ paddingRight: "24px" }}>
       <Formik
-       initialValues={{
-        questions: state.questionSet
-          ? state.questionSet.map(question => ({
-              question: question?.question,
-              answers: question?.answerOptions.map(answerOption => ({
-                answer: answerOption?.answer,
-                correct: answerOption?.isCorrectAnswer,
-                selected: answerOption?.isCorrectAnswer,
+        initialValues={{
+          questions: edit
+            ? state.questionSet.map(question => ({
+                question: question?.question,
+                answers: question?.answerOptions.map(answerOption => ({
+                  answer: answerOption?.answer,
+                  correct: answerOption?.isCorrectAnswer,
+                  selected: answerOption?.isCorrectAnswer,
+                })),
+              }))
+            : Array.from({ length: questionCount }, () => ({
+                question: "",
+                answers: Array.from({ length: 4 }, () => ({
+                  answer: "",
+                  correct: false,
+                  selected: false,
+                })),
               })),
-            }))
-          : Array.from({ length: questionCount }, () => ({
-              question: "",
-              answers: Array.from({ length: 4 }, () => ({
-                answer: "",
-                correct: false,
-                selected: false,
-              })),
-            })),
-      }}
+        }}
         validationSchema={Yup.object().shape({
           questions: Yup.array().of(
             Yup.object().shape({
@@ -84,12 +90,21 @@ const AddDataForm = () => {
           }
         }}
         onSubmit={async (values, { setSubmitting }) => {
+          // console.log(state, " dssss");
           setOnAlert(true);
           const arrayData = [];
 
-          // console.log(values.editQuestionSet, " 5555555555555555555555555555555555")
+          // Initialize state if it's not already an object
+          if (typeof state !== "object" || state === null) {
+            state = {};
+          }
+
+          // Initialize questionSet if it's not already an object
+          if (!state.questionSet) {
+            state.questionSet = {};
+          }
+
           values.questions?.map((ele) => {
-           
             const obj = {
               question: ele.question,
               answerOptions: [
@@ -116,13 +131,12 @@ const AddDataForm = () => {
               ],
             };
             arrayData.push(obj);
+            // console.log(arrayData, " ddddd");
           });
-
           state.questionSet.questionSet = arrayData;
+          // console.log(state, "ss");
 
-          if(!state.editQuestionSet)
-          {
-
+          if (edit) {
             try {
               const { data } = await axios.post(
                 `https://atme-quiz.onrender.com/api/contests`,
@@ -137,9 +151,8 @@ const AddDataForm = () => {
               console.log("error", err);
             }
             toast.success("Quiz Added");
-            navigate("/");
-          }
-          else {
+            navigate(-1);
+          } else {
             try {
               const { data } = await axios.post(
                 `https://atme-quiz.onrender.com/api/contests`,
