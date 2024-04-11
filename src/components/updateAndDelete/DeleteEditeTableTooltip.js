@@ -6,8 +6,6 @@ import AddEditCategoryForm from "../category/editForm/EditCategoryForm";
 import axios from "axios";
 import AddQuiz from "../quizes/addQuiz/AddQuiz";
 import toast from "react-hot-toast";
-import { removeFromQuiz } from "../../slices/QuizSlice";
-import { useDispatch } from "react-redux";
 
 export default function DeleteEditeTableTooltip({
   productDetails,
@@ -18,7 +16,6 @@ export default function DeleteEditeTableTooltip({
   const [showModalEdit, setShowEditForm] = useState(false);
   const [productDetailsdata, setProductDetailsdata] = useState({});
   const [openConfirmation, setOpenConfirmation] = useState(false);
-  const dispatch = useDispatch();
 
   // console.log(productDetails, " jjjjjjjjjjjjjjj");
   const handleEditClick = (id) => {
@@ -57,7 +54,6 @@ export default function DeleteEditeTableTooltip({
       const { data } = await axios.delete(
         `https://atme-quiz.onrender.com/api/contests/${tableMeta.rowData[0]}`
       );
-      dispatch(removeFromQuiz(tableMeta.rowData[0]));
       toast.success("Entity deleted");
     } catch (err) {
       console.log(err, "delete data");
